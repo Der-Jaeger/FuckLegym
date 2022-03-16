@@ -92,7 +92,14 @@ public class OnlineMaps extends AppCompatActivity {
         if(actionBar != null){
             actionBar.hide();
         }
-
+        //自定义地图按钮
+        findViewById(R.id.custom_edit_map).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(OnlineMaps.this, MapSelector.class));
+            }
+        });
+        //增加云端地图按钮
         findViewById(R.id.add_maps_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

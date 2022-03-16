@@ -1,8 +1,9 @@
 {
-  "current_version": "3.1.8",
+  "current_version": "3.2.0",
   "msg": [
-    "修复部分地图闪退bug",
-    "增加登陆检查功能",
+    "重磅更新！",
+    "刷跑步新增自主绘制地图功能！不用再求云端地图啦！",
+    "新增定点跑选项",
     "大家速速去看《赛马娘》！"
   ],
   "update_url": "https://github.com/Foreverddb/FuckLegym/releases"
