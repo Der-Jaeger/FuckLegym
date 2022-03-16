@@ -33,6 +33,16 @@
                 android:layout_marginTop="10dp"
                 android:text="定位"
                 android:drawableLeft="@drawable/locate"/>
+            <Button
+                android:id="@+id/save_route"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="100dp"
+                android:text="保存"
+                android:drawableLeft="@drawable/save"/>
 
         </com.amap.api.maps2d.MapView>
         <RelativeLayout

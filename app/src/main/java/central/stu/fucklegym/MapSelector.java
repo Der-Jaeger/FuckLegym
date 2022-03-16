@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -30,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -53,6 +55,8 @@ import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.Tip;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
+
+import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -193,6 +197,21 @@ public class MapSelector extends AppCompatActivity implements PoiSearch.OnPoiSea
                 }
             }
         });
+        //设置保存事件
+        findViewById(R.id.save_route).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(polylines.size() <= 1){
+                    Toast.makeText(MapSelector.this, "请至少选取两个坐标点！", Toast.LENGTH_SHORT).show();
+                }else {
+                    SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.local_maps_path), MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("自定义路线", getRouteToJson().toString());
+                    editor.apply();
+                    Toast.makeText(MapSelector.this, "保存路线成功！返回选择跑步区域即可！", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         //点击地图事件
         aMap.setOnMapClickListener(new AMap.OnMapClickListener() {
             @Override
@@ -220,33 +239,6 @@ public class MapSelector extends AppCompatActivity implements PoiSearch.OnPoiSea
         mUiSettings.setScaleControlsEnabled(true);
 
 //        aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
-    }
-
-    //获取当前所用密钥sha1值
-    private static String sHA1(Context context) {
-        try {
-            PackageInfo info = context.getPackageManager().getPackageInfo(
-                    context.getPackageName(), PackageManager.GET_SIGNATURES);
-            byte[] cert = info.signatures[0].toByteArray();
-            MessageDigest md = MessageDigest.getInstance("SHA1");
-            byte[] publicKey = md.digest(cert);
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < publicKey.length; i++) {
-                String appendString = Integer.toHexString(0xFF & publicKey[i])
-                        .toUpperCase(Locale.US);
-                if (appendString.length() == 1)
-                    hexString.append("0");
-                hexString.append(appendString);
-                hexString.append(":");
-            }
-            String result = hexString.toString();
-            return result.substring(0, result.length() - 1);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     //获取当前所在位置
@@ -328,10 +320,24 @@ public class MapSelector extends AppCompatActivity implements PoiSearch.OnPoiSea
             }
         });
     }
-
     @Override
     public void onPoiItemSearched(PoiItem poiItem, int i) {
 
     }
-
+    private JSONObject getRouteToJson(){
+        JSONObject route = new JSONObject();
+        JSONArray latitude = new JSONArray();
+        JSONArray longitude = new JSONArray();
+        for (LatLng point: polylines.get(polylines.size() - 1).getPoints()){
+            latitude.add(point.latitude);
+            longitude.add(point.longitude);
+        }
+        try {
+            route.put("latitude", latitude);
+            route.put("longitude", longitude);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return route;
+    }
 }

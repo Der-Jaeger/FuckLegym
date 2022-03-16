@@ -97,7 +97,7 @@ public class FreeRun extends AppCompatActivity implements View.OnClickListener {
     private int mapIndex = -1;
     private static String[] maps;
     private int typeIndex = -1;
-    private final String[] runType = new String[]{"自由跑", "范围跑"};
+    private final String[] runType = new String[]{"自由跑", "范围跑", "定点跑"};
     Handler handler;
 
     @Override
@@ -108,6 +108,12 @@ public class FreeRun extends AppCompatActivity implements View.OnClickListener {
         if(actionBar != null){
             actionBar.hide();
         }
+        findViewById(R.id.custom_edit_map_url).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(FreeRun.this, MapSelector.class));
+            }
+        });
         //设置选择地图按钮
         Button selectMapBtn = (Button) findViewById(R.id.select_map);
         selectMapBtn.setOnClickListener(new View.OnClickListener() {
