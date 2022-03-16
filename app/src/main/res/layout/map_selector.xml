@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.percentlayout.widget.PercentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapSelector">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_heightPercent="100%"
+        android:layout_gravity="bottom|left">
+        <com.amap.api.maps2d.MapView
+            android:id="@+id/the_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/return_last_operation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="50dp"
+                android:text="撤销"
+                android:drawableLeft="@drawable/revocate"/>
+            <Button
+                android:id="@+id/to_my_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="定位"
+                android:drawableLeft="@drawable/locate"/>
+
+        </com.amap.api.maps2d.MapView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_gravity="top|left">
+
+            <TextView
+                android:id="@+id/map_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="绘制自定义地图"
+                android:textSize="25dp" />
+
+            <EditText
+                android:id="@+id/map_search_bar"
+                android:layout_below="@+id/map_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/edit_background"
+                android:fitsSystemWindows="true"
+                android:hint="搜索位置"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:selectAllOnFocus="true" />
+
+            <TextView
+                android:id="@+id/info_bar"
+                android:layout_below="@+id/map_search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:padding="10dp"
+                android:text="在下方点击地图选取坐标点，多个坐标点形成路线"/>
+            <ListView
+                android:id="@+id/select_poi_list"
+                android:layout_below="@+id/map_search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </FrameLayout>
+
+</androidx.percentlayout.widget.PercentFrameLayout>

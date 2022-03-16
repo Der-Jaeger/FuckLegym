@@ -40,13 +40,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="导入地图" />
-
+        <Button
+            android:id="@+id/custom_edit_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="自定义跑步路径" />
         <Button
             android:id="@+id/add_maps_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="如何增加自己想要的地图" />
+            android:text="增加地图到云端" />
 
         <ImageView
             android:id="@+id/imageView6"
