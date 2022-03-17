@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import fucklegym.top.entropy.NetworkSupport;
 import fucklegym.top.entropy.User;
+import ldh.logic.OnlineData;
 
 class getCourseList extends Thread{
     private User user;
@@ -100,9 +101,7 @@ public class CourseSignUp extends AppCompatActivity {
             actionBar.hide();
         }
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        user = new User(bundle.getString("username"),bundle.getString("password"));
+        user = OnlineData.INSTANCE.getUser();
 
         TextView courseName = (TextView) findViewById(R.id.courseName);
         TextView canSign = (TextView) findViewById(R.id.can_sign);

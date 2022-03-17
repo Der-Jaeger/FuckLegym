@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import central.stu.fucklegym.FreeRun
 import central.stu.fucklegym.R
 import com.liangguo.androidkit.app.ToastUtil
 import com.liangguo.easyingcontext.EasyingContext.context
 import com.tencent.bugly.proguard.w
 import fucklegym.top.entropy.NetworkSupport
 import fucklegym.top.entropy.PathGenerator
+import fucklegym.top.entropy.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -73,7 +73,7 @@ class RunningViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             OnlineData.user.let {
                 val e = try {
-                    NetworkRepository.uploadRunningData(it)
+                    NetworkRepository.uploadRunningData(it as User)
                    null
                 } catch (e: Exception) { e }
 

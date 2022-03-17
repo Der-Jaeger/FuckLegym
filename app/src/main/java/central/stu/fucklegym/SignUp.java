@@ -26,6 +26,8 @@ import java.util.HashMap;
 
 import fucklegym.top.entropy.NetworkSupport;
 import fucklegym.top.entropy.User;
+import ldh.logic.OnlineData;
+
 class LoadActivitiresThread extends Thread{
     private User user;
     private Handler handler;
@@ -141,19 +143,8 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        user = new User(bundle.getString("username"),bundle.getString("password"));
-        //预留一个switch
-//        Switch notifySwitch = (Switch) findViewById(R.id.switch_sign_notify);
-//        notifySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                signNotify = b;
-//            }
-//        });
-//        this.textView = (TextView)findViewById(R.id.textView_allActivities);
-//        this.editText = (EditText)findViewById(R.id.editText_activityName);
+        user = OnlineData.INSTANCE.getUser();
+
         handler = new Handler(){
             public void handleMessage(Message msg) {
                 // 处理消息
