@@ -52,6 +52,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="ldh.ui.run.RunningActivity" android:label="@string/upload_running"/>
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="c63afd429ab2a1018fd877fdaea14fa5" />

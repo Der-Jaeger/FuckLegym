@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="pref_key_distance_range_from">pref_key_distance_range_from</string>
+    <string name="pref_key_distance_range_to">pref_key_distance_range_to</string>
+    <string name="pref_key_running_type">pref_key_running_type</string>
+    <string name="pref_key_running_map">pref_key_running_map</string>
+    <string name="pref_key_running_map_uest_chengdu">电子科技大学（清水河校区）</string>
+    <string name="pref_key_running_map_swpu_chengdu">西南石油大学（成都校区）</string>
+    <string name="pref_key_running_map_uest_shahe">电子科技大学（沙河校区）</string>
+    
+</resources>
