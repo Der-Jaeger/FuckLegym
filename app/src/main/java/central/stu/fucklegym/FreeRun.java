@@ -104,10 +104,7 @@ public class FreeRun extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_free_run);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
-            actionBar.hide();
-        }
+
         findViewById(R.id.custom_edit_map_url).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

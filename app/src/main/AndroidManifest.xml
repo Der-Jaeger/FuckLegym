@@ -52,14 +52,7 @@
         android:theme="@style/Theme.FuckLegym">
         <activity android:name=".OnlineMaps"></activity>
         <activity android:name=".WebViewStarter" />
-        <activity android:name=".CourseSignUp" /> <!-- <receiver -->
-        <!-- android:name=".MySignupReceiver" -->
-        <!-- android:enabled="true" -->
-        <!-- android:exported="true"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.TIME_TICK"/> -->
-        <!-- </intent-filter> -->
-        <!-- </receiver> -->
+        <activity android:name=".CourseSignUp" />
         <activity android:name=".Distribute" />
         <activity android:name=".UpdateMassage" />
         <activity android:name=".SignUp" />
