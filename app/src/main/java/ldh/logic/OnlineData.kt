@@ -14,6 +14,9 @@ object OnlineData {
     /**
      * 当前已经登录的用户
      */
-    val user = MutableLiveData<User>()
+    private val _user = MutableLiveData<User>()
+
+    val user: User
+        get() = TODO()
 
 }
