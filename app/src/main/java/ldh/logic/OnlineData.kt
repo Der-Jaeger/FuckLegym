@@ -16,7 +16,10 @@ object OnlineData {
      */
     private val _user = MutableLiveData<User>()
 
-    val user: User
+    /**
+     * 当前的用户(可能返回空值)
+     */
+    val user: User?
         get() = TODO()
 
 }
