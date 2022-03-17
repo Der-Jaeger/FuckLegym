@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
+import com.liangguo.androidkit.app.ToastUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -136,7 +137,9 @@ public class OnlineMaps extends AppCompatActivity {
                         Toast.makeText(OnlineMaps.this, "加载错误...", Toast.LENGTH_SHORT).show();
                         break;
                     case IMPORTSUCCESS:
-                        Toast.makeText(OnlineMaps.this, "导入成功！请返回跑步界面并刷新。", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(OnlineMaps.this, "导入成功！请返回跑步界面并刷新。", Toast.LENGTH_SHORT).show();
+                        ToastUtil.INSTANCE.success(getString(R.string.import_success), ToastUtil.INSTANCE.getDEFAULT_DURATION());
+                        finish();
                         break;
                 }
             }

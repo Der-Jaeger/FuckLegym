@@ -16,4 +16,5 @@
     <string name="please_login_first">请先返回去登录</string>
     <string name="upload_success">上传成功</string>
     <string name="upload_failed">上传失败</string>
+    <string name="import_success">导入成功！</string>
 </resources>

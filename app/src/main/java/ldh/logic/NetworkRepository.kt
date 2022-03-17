@@ -1,6 +1,5 @@
 package ldh.logic
 
-import central.stu.fucklegym.FreeRun
 import fucklegym.top.entropy.User
 import ldh.ui.run.logic.RunningPrefUtil
 import ldh.ui.run.logic.RunningType

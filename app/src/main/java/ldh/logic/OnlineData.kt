@@ -14,6 +14,19 @@ object OnlineData {
     /**
      * 当前已经登录的用户
      */
-    val user = MutableLiveData<User>()
+    private val _user = MutableLiveData<User>()
+
+    /**
+     * 当前的用户
+     */
+    val user: User
+        get() = TODO()
+
+    /**
+     * 重新登录并且在登录结束后做什么事情...
+     */
+    fun loginAndDo(runnable: Runnable) {
+
+    }
 
 }
