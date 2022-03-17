@@ -1,9 +1,12 @@
 package central.stu.fucklegym;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.alibaba.fastjson.*;
 import com.liangguo.androidkit.app.ActivityExtKt;
@@ -19,10 +22,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -168,14 +176,34 @@ class CheckUpdateThread extends Thread{
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int LOGIN_SUCCESS = 0;
     public static final int LOGIN_FAIL = 1;
+    private boolean logined = false;
+    private DrawerLayout drawerLayout;//滑动菜单
+    private NavigationView navigationView;//滑动导航栏
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //获取顶部工具栏
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setHomeAsUpIndicator(R.drawable.menu);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        //设置滑动导航栏选中选项后关闭导航栏
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+                checkLogin(item.getItemId());
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
 
+        //检查更新
         checkUpdate();
         Button but = (Button)findViewById(R.id.button_freeRun);
 //        findViewById(R.id.button_running).setOnClickListener(v -> {
@@ -195,22 +223,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 MainActivity.this.saveUser(user, pass);
             }
         });
-        //去看赛马娘的按钮
-        ((Button)findViewById(R.id.uma)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                jumpWeb("https://www.bilibili.com/bangumi/play/ep199681");
-            }
-        });
-        //关于软件的按钮
-        ((Button)findViewById(R.id.distribute)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://github.com/Foreverddb/FuckLegym"));
-                startActivity(intent);
-            }
-        });
+
         //判断是否更新
         SharedPreferences currentVersion = getSharedPreferences("update", MODE_PRIVATE);
         String version = currentVersion.getString("current_version", "");
@@ -225,6 +238,83 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         password.setText(pwd);
     }
 
+    /**
+     * 创建菜单
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+    /**
+     * 设置菜单选项的每个按钮事件
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.settings:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://github.com/Foreverddb/FuckLegym"));
+                startActivity(intent);
+                break;
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+        }
+        return true;
+    }
+    public void checkLogin(int id){
+        Handler handler = new Handler(){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                switch (msg.what){
+                    case LOGIN_SUCCESS:
+                        Toast.makeText(MainActivity.this, "登陆成功！", Toast.LENGTH_SHORT).show();
+                        switch (id){
+                            case R.id.nav_run:
+                                jumpFreeRun();
+                                break;
+                            case R.id.nav_activity:
+                                jumpSignUp();
+                                break;
+                            case R.id.nav_course:
+                                jumpCourseSignUp();
+                                break;
+                        }
+                        logined = true;
+                        break;
+                    case LOGIN_FAIL:
+                        logined = false;
+                        android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(MainActivity.this)
+                                .setTitle("登陆失败")
+                                .setMessage("乐健账户登陆检查失败，请重新检查您的乐健账号和密码！")
+                                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                })
+                                .create();
+                        alertDialog.show();
+                        break;
+                }
+            }
+        };
+        EditText username = (EditText)findViewById(R.id.editText_username);
+        EditText password = (EditText)findViewById(R.id.editText_password);
+        String user = username.getText().toString();
+        String pass = password.getText().toString();
+        new LoginCheck(user,pass, handler).start();
+    }
     @Override
     public void onClick(View view) {
         Handler handler = new Handler(){
@@ -279,11 +369,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CourseSign jmp = new CourseSign(this);
         jmp.start();
     }
-    private void jumpWeb(String url){
-        Intent intent = new Intent(MainActivity.this, WebViewStarter.class);
-        intent.putExtra("url", url);
-        startActivity(intent);
-    }
+//    private void jumpWeb(String url){
+//        Intent intent = new Intent(MainActivity.this, WebViewStarter.class);
+//        intent.putExtra("url", url);
+//        startActivity(intent);
+//    }
     //保存账号密码
     void saveUser(String username, String password){
         SharedPreferences userInfo = getSharedPreferences("user", MODE_PRIVATE);
@@ -314,12 +404,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         alertDialogBuilder.setPositiveButton("我知道了", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        });
-                        alertDialogBuilder.setNegativeButton("去看《赛马娘》", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                jumpWeb("https://www.bilibili.com/bangumi/play/ep199681");
                             }
                         });
                         final AlertDialog alertdialog1 = alertDialogBuilder.create();
