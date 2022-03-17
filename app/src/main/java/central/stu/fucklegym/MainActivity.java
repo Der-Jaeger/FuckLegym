@@ -251,7 +251,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.settings:
-                jumpWeb("https://github.com/Foreverddb/FuckLegym");
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://github.com/Foreverddb/FuckLegym"));
+                startActivity(intent);
                 break;
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -360,11 +362,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CourseSign jmp = new CourseSign(this);
         jmp.start();
     }
-    private void jumpWeb(String url){
-        Intent intent = new Intent(MainActivity.this, WebViewStarter.class);
-        intent.putExtra("url", url);
-        startActivity(intent);
-    }
+//    private void jumpWeb(String url){
+//        Intent intent = new Intent(MainActivity.this, WebViewStarter.class);
+//        intent.putExtra("url", url);
+//        startActivity(intent);
+//    }
     //保存账号密码
     void saveUser(String username, String password){
         SharedPreferences userInfo = getSharedPreferences("user", MODE_PRIVATE);
@@ -395,12 +397,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         alertDialogBuilder.setPositiveButton("我知道了", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        });
-                        alertDialogBuilder.setNegativeButton("去看《赛马娘》", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                jumpWeb("https://www.bilibili.com/bangumi/play/ep199681");
                             }
                         });
                         final AlertDialog alertdialog1 = alertDialogBuilder.create();

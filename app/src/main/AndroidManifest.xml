@@ -51,9 +51,7 @@
         android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.FuckLegym">
         <activity android:name=".OnlineMaps"></activity>
-        <activity android:name=".WebViewStarter" />
         <activity android:name=".CourseSignUp" />
-        <activity android:name=".Distribute" />
         <activity android:name=".UpdateMassage" />
         <activity android:name=".SignUp" />
         <activity android:name=".FreeRun" />

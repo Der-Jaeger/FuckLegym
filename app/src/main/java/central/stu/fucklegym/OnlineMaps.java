@@ -88,10 +88,7 @@ public class OnlineMaps extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_online_maps);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
-            actionBar.hide();
-        }
+
         //自定义地图按钮
         findViewById(R.id.custom_edit_map).setOnClickListener(new View.OnClickListener() {
             @Override
