@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="phone_statue_bar_height">35dp</dimen>
+    <dimen name="collapsing_toolbar_layout_large_size">150dp</dimen>
+</resources>

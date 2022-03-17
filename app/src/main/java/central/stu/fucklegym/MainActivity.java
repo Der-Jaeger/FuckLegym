@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.alibaba.fastjson.*;
+import com.liangguo.androidkit.app.ActivityExtKt;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -27,6 +28,9 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import fucklegym.top.entropy.*;
+import ldh.logic.OnlineData;
+import ldh.ui.run.RunningActivity;
+
 class LoginCheck extends Thread{
     String username;
     String password;
@@ -42,6 +46,7 @@ class LoginCheck extends Thread{
             User user = new User(username, password);
             user.login();
             handler.sendEmptyMessage(MainActivity.LOGIN_SUCCESS);
+            OnlineData.INSTANCE.getUser().postValue(user);
         }catch (IOException e){
             e.printStackTrace();
             handler.sendEmptyMessage(MainActivity.LOGIN_FAIL);
@@ -60,7 +65,7 @@ class Jump extends Thread{
         EditText password = (EditText)cont.findViewById(R.id.editText_password);
         String user = username.getText().toString();
         String pass = password.getText().toString();
-        Intent intent = new Intent(cont,FreeRun.class);
+        Intent intent = new Intent(cont,RunningActivity.class);
         intent.putExtra("username", user);
         intent.putExtra("password", pass);
         cont.startActivity(intent);
@@ -173,6 +178,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         checkUpdate();
         Button but = (Button)findViewById(R.id.button_freeRun);
+//        findViewById(R.id.button_running).setOnClickListener(v -> {
+//            startActivity(new Intent(this, RunningActivity.class));
+//        });
         but.setOnClickListener(this);
         ((Button)findViewById(R.id.button_signup)).setOnClickListener(this);
         ((Button)findViewById(R.id.button_course_sign)).setOnClickListener(this);

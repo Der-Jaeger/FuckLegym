@@ -2,4 +2,18 @@
     <string name="app_name">DdB\'s Legym</string>
     <string name="update_url">https://foreverddb.github.io/FuckLegym/msg.json</string>
     <string name="local_maps_path">local_maps</string>
+    <string name="introduction_running">每次上传的跑步公里数：这是一个在一定范围之间的随机值。   单位：km</string>
+    <string name="running_area">跑步地图</string>
+    <string name="running_type">跑步类型</string>
+    <string name="free_running">自由跑</string>
+    <string name="point_running">定点跑</string>
+    <string name="range_running">范围跑</string>
+    <string name="import_clould_maps">导入云端地图</string>
+    <string name="upload">上传</string>
+    <string name="upload_running">刷跑步</string>
+    <string name="option_running">跑步选项</string>
+    <string name="running_distance_range">跑好远</string>
+    <string name="please_login_first">请先返回去登录</string>
+    <string name="upload_success">上传成功</string>
+    <string name="upload_failed">上传失败</string>
 </resources>
