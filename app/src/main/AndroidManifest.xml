@@ -32,7 +32,7 @@
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.FuckLegym">
-        <activity android:name=".test"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".OnlineMaps" />
         <activity android:name=".CourseSignUp" />
         <activity android:name=".UpdateMassage" />
@@ -43,7 +43,7 @@
         <service android:name="com.amap.api.location.APSService" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="ldh.ui.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DdB\'s Legym</string>
+    <string name="app_name">FuckingLegym</string>
     <string name="update_url">https://foreverddb.github.io/FuckLegym/msg.json</string>
     <string name="local_maps_path">local_maps</string>
     <string name="introduction_running">每次上传的跑步公里数：这是一个在一定范围之间的随机值。   单位：km</string>
@@ -17,4 +17,6 @@
     <string name="upload_success">上传成功</string>
     <string name="upload_failed">上传失败</string>
     <string name="import_success">导入成功！</string>
+    <string name="login">登录</string>
+    <string name="login_failed">登录失败</string>
 </resources>
