@@ -3,7 +3,7 @@ package ldh.config
 import android.app.Application
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
-import com.tencent.bugly.crashreport.CrashReport
+import com.tencent.mmkv.MMKV
 
 
 /**
@@ -23,6 +23,8 @@ class App : Application() {
         //配置Bugly
         Bugly.init(this, "9333bb0d44", true)
         Beta.checkUpgrade(false, true)
+
+        MMKV.initialize(this)
     }
 
 }

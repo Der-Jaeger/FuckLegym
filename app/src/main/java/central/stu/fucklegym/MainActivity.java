@@ -56,7 +56,7 @@ class LoginCheck extends Thread {
             User user = new User(username, password);
             user.login();
             handler.sendEmptyMessage(MainActivity.LOGIN_SUCCESS);
-            OnlineData.INSTANCE.getUser().postValue(user);
+//            OnlineData.INSTANCE.getUser().postValue(user);
         } catch (IOException e) {
             e.printStackTrace();
             handler.sendEmptyMessage(MainActivity.LOGIN_FAIL);

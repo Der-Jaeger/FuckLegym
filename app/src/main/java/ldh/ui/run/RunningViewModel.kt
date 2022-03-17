@@ -71,7 +71,7 @@ class RunningViewModel : ViewModel() {
     fun uploadRunningData() {
         buttonClickable.value = false
         viewModelScope.launch(Dispatchers.IO) {
-            OnlineData.user.value?.let {
+            OnlineData.user.let {
                 val e = try {
                     NetworkRepository.uploadRunningData(it)
                    null
@@ -83,9 +83,6 @@ class RunningViewModel : ViewModel() {
                         buttonClickable.value = true
                     } ?: ToastUtil.success(context.getString(R.string.upload_success))
                 }
-            } ?: withContext(Dispatchers.Main){
-                ToastUtil.error(context.getString(R.string.please_login_first))
-                buttonClickable.value = true
             }
         }
     }

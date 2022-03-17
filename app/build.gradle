@@ -52,6 +52,8 @@ dependencies {
     implementation 'com.github.ldh-star:ClarityPermission:1.0.9@aar'
 
     implementation 'com.tencent.bugly:crashreport_upgrade:1.5.23'
+    implementation 'com.tencent:mmkv-static:1.0.23'
+
     implementation 'com.gitee.zackratos:UltimateBarX:0.8.0'
 
 
