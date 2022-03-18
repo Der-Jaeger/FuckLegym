@@ -22,4 +22,9 @@
     <string name="import_success">导入成功！</string>
     <string name="login">登录</string>
     <string name="login_failed">登录失败</string>
+    <string name="account">账号</string>
+    <string name="password">密码</string>
+    <string name="i_use_app_quietly">我会低调使用该软件</string>
+    <string name="account_helper">登乐健的账号，一般是手机号</string>
+    <string name="password_helper">乐健账号的密码</string>
 </resources>

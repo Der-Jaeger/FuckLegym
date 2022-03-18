@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import central.stu.fucklegym.R
+import com.liangguo.androidkit.app.contentView
 import com.liangguo.androidkit.color.ColorUtil
 import com.liangguo.androidkit.color.resolveColor
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarOnly
@@ -23,6 +24,9 @@ abstract class BaseActivity: AppCompatActivity() {
             //布局是否侵入状态栏（true 不侵入，false 侵入）
             fitWindow = false
             light = ColorUtil.isColorLight(resolveColor(R.attr.colorSurface))
+        }
+        window.decorView.post {
+            contentView?.setBackgroundColor(resolveColor(R.attr.colorSurface))
         }
     }
 
