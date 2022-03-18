@@ -4,12 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,13 +35,13 @@ class getCourseList extends Thread{
 
             JSONObject courses = user.getCourseList();
             Message msg = handler.obtainMessage();
-            msg.what = CourseSignUp.GETCOURSES;
+            msg.what = CourseSignUpActivity.GETCOURSES;
             msg.obj = courses;
             handler.sendMessage(msg);
         }catch (IOException e){
             e.printStackTrace();
             Message msg = handler.obtainMessage();
-            msg.what = CourseSignUp.LOADCOURSESFAIL;
+            msg.what = CourseSignUpActivity.LOADCOURSESFAIL;
             msg.obj = null;
             handler.sendMessage(msg);
         }
@@ -66,29 +64,29 @@ class signCourse extends Thread{
                 Message msg = handler.obtainMessage();
                 msg.what = SignUp.UPLOADSUCCESS;
                 msg.obj = courseId;
-                handler.sendEmptyMessage(CourseSignUp.UPLOADSUCCESS);
+                handler.sendEmptyMessage(CourseSignUpActivity.UPLOADSUCCESS);
             }else {
                 Message msg = handler.obtainMessage();
                 msg.what = SignUp.UPLOADSUCCESS;
                 msg.obj = courseId;
-                handler.sendEmptyMessage(CourseSignUp.UPLOADFAIL);
+                handler.sendEmptyMessage(CourseSignUpActivity.UPLOADFAIL);
             }
         }catch (Exception e){
             e.printStackTrace();
             Message msg = handler.obtainMessage();
-            msg.what = CourseSignUp.UPLOADFAIL;
+            msg.what = CourseSignUpActivity.UPLOADFAIL;
             msg.obj = courseId;
             handler.sendMessage(msg);
         }
     }
 }
 
-public class CourseSignUp extends AppCompatActivity {
+public class CourseSignUpActivity extends AppCompatActivity {
     public static final int GETCOURSES = 0;
     public static final int UPLOADSUCCESS = 1;
     public static final int UPLOADFAIL = 2;
     public static final int LOADCOURSESFAIL = 3;
-    private User user;
+    private final User user = OnlineData.INSTANCE.getUser();
     private JSONObject course;
     private String courseId;
     private int weekIndex;
@@ -124,10 +122,10 @@ public class CourseSignUp extends AppCompatActivity {
                         course = courses;
                         break;
                     case UPLOADSUCCESS:
-                        Toast.makeText(CourseSignUp.this, "签到成功！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CourseSignUpActivity.this, "签到成功！", Toast.LENGTH_SHORT).show();
                         break;
                     case UPLOADFAIL:
-                        Toast.makeText(CourseSignUp.this, "签到失败！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CourseSignUpActivity.this, "签到失败！", Toast.LENGTH_SHORT).show();
                         break;
                     case LOADCOURSESFAIL:
                         courseName.setText("今天没有体育课程哦~");

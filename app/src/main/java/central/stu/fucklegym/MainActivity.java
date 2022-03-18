@@ -1,10 +1,8 @@
 package central.stu.fucklegym;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -14,9 +12,6 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentFactory;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -41,12 +35,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Locale;
 
-import central.stu.fucklegym.fragments.ActivityFragment;
 import central.stu.fucklegym.fragments.BaseFragment;
-import central.stu.fucklegym.fragments.FreeRunFragment;
 import fucklegym.top.entropy.NetworkSupport;
 import fucklegym.top.entropy.User;
-import ldh.logic.OnlineData;
 import ldh.ui.run.RunningActivity;
 
 //判断是否更新
@@ -116,7 +107,7 @@ public class MainActivity extends AppCompatActivity{
                         startActivity(new Intent(MainActivity.this, SignUp.class));
                         break;
                     case R.id.nav_course:
-                        startActivity(new Intent(MainActivity.this, CourseSignUp.class));
+                        startActivity(new Intent(MainActivity.this, CourseSignUpActivity.class));
                         break;
                 }
                 drawerLayout.closeDrawers();

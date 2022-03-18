@@ -25,14 +25,14 @@ sealed class RunningType {
      * 自由跑
      */
     object Free : RunningType() {
-        override val title = context.getString(R.string.free_running)
+        override val title = "自由跑"
     }
 
     /**
      * 定点跑
      */
     object Point : RunningType() {
-        override val title = context.getString(R.string.point_running)
+        override val title = "定点跑"
     }
 
 
@@ -40,7 +40,7 @@ sealed class RunningType {
      * 范围跑
      */
     object Range : RunningType() {
-        override val title = context.getString(R.string.range_running)
+        override val title = "范围跑"
     }
 
 

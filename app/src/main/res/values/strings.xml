@@ -28,4 +28,7 @@
     <string name="account_helper">登乐健的账号，一般是手机号</string>
     <string name="password_helper">乐健账号的密码</string>
     <string name="go_to_running">去跑步</string>
+    <string name="semester_mileage">本学期里程</string>
+    <string name="sign_activity">活动签到</string>
+    <string name="sign_course">课程签到</string>
 </resources>

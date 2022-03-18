@@ -2,7 +2,9 @@ package ldh.ui.main
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import central.stu.fucklegym.CourseSignUpActivity
 import central.stu.fucklegym.R
+import central.stu.fucklegym.SignUp
 import central.stu.fucklegym.databinding.ActivityMainBinding
 import com.liangguo.androidkit.app.startNewActivity
 import ldh.base.BaseActivity
@@ -28,11 +30,25 @@ class MainActivity : BaseActivity() {
 
     private fun initViews() {
         binding.apply {
-            button.setOnClickListener {
+            buttonRunning.setOnClickListener {
                 RunningActivity::class.startNewActivity()
             }
 
+            buttonSignActivity.setOnClickListener {
+                CourseSignUpActivity::class.startNewActivity()
+            }
+
+            buttonSignCourse.setOnClickListener {
+                SignUp::class.startNewActivity()
+            }
+
+
             user = OnlineData.userData
+            imageHeader.setImageResource(
+                if (OnlineData.userData.avatar == 1) R.drawable.ic_avatar_male
+                else R.drawable.icon_avatar_man
+            )
+
         }
 
     }

@@ -38,6 +38,7 @@ class LoadActivitiresThread extends Thread{
     @Override
     public void run() {
         try {
+
             user.login();
 
             HashMap<String,String> acts = (HashMap<String, String>) user.getTodayActivities();
@@ -130,7 +131,7 @@ public class SignUp extends AppCompatActivity {
     public static final int UPLOADFAIL = 2;
     public static final int ACTIVITYDOESNOTEXIST = 3;
     private TextView textView;
-    private User user;
+    private final User user = OnlineData.INSTANCE.getUser();
     private EditText editText;
     private HashMap<String,String> activities;
     private Handler handler;
@@ -201,7 +202,6 @@ public class SignUp extends AppCompatActivity {
                 }
             }
         };
-        new LoadActivitiresThread(user,handler).start();
         ((Button)findViewById(R.id.button_uploadSign)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -211,6 +211,7 @@ public class NetworkSupport {
         JSONObject res = postForReturn(URL_UPLOAD_RUNNINGDETAIL, header, content.toString());
         Log.d("runRes", "uploadRunningDetail: " + res.toString());
         //System.out.println(res.toString());
+        //{"code":0,"data":true}
         if (res.getBoolean("data")) return UploadStatus.SUCCESS;
         else return UploadStatus.FAIL;
     }

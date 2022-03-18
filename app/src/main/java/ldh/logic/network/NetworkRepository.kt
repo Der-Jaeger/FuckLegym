@@ -1,5 +1,11 @@
 package ldh.logic.network
 
+import android.util.Log
+import fucklegym.top.entropy.NetworkSupport
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ldh.logic.OnlineData
 import ldh.logic.OnlineData.headerMap
 import ldh.logic.network.model.HttpResult
@@ -9,6 +15,10 @@ import ldh.logic.network.model.running.UploadRunningDetailsRequestBean
 import ldh.logic.network.service.EducationService
 import ldh.logic.network.service.LoginService
 import ldh.logic.network.service.RunningService
+import ldh.ui.run.logic.RunningType
+import java.io.IOException
+import java.util.*
+import kotlin.random.Random
 
 
 /**
@@ -34,6 +44,42 @@ object NetworkRepository {
      */
     suspend fun uploadRunningDetail(requestBean: UploadRunningDetailsRequestBean) = catchError {
         runningService.uploadRunningDetails(headerMap, requestBean)
+    }
+
+    /**
+     * 用以前的旧代码上传跑步数据
+     */
+    suspend fun uploadRunningDetail(
+        distanceRange: List<Float>,
+        map: String?,
+        limitationsGoalsSexInfoId: String?,
+        type: RunningType
+    ) = withContext(Dispatchers.IO) {
+        try {
+            val totMileage = distanceRange.let {
+                Random.nextDouble(
+                    it.first().toDouble(),
+                    it.last().toDouble()
+                )
+            }
+            val endTime = Date()
+            val startTime =
+                Date(endTime.time - (10 + Random.nextInt(10)) * 60 * 1000 - Random.nextInt(60) * 1000)
+            return@withContext NetworkSupport.uploadRunningDetail(
+                OnlineData.userData.accessToken,
+                limitationsGoalsSexInfoId,
+                OnlineData.currentData.id,
+                totMileage,
+                totMileage,
+                startTime,
+                endTime,
+                map,
+                type.title
+            ) == NetworkSupport.UploadStatus.SUCCESS
+        } catch (e: IOException) {
+            Log.e("上传失败", e.toString())
+            return@withContext false
+        }
     }
 
     suspend fun getCurrentSemesterId() = catchError {

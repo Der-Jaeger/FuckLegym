@@ -24,6 +24,7 @@ data class UploadRunningDetailsRequestBean(
     val totalMileage: Double,
     val totalPart: Double,
     val type: String,
+    val uneffectiveReason: String?
 )
 
 data class RoutineLine(
