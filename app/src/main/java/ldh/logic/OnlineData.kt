@@ -62,7 +62,7 @@ object OnlineData {
                     data?.let {
                         //登录成功
                         withContext(Dispatchers.Main) {
-                            userData.postValue(it)
+                            userData.value = it
                             runnable?.run()
                         }
                     }
@@ -75,5 +75,10 @@ object OnlineData {
             }
         }
     }
+
+    suspend fun syncLogin() =
+        NetworkRepository.login(LocalUserData.userId, LocalUserData.password).apply {
+            data?.let { userData.postValue(it) }
+        }
 
 }

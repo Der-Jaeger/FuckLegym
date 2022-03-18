@@ -1,6 +1,7 @@
 package ldh.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import central.stu.fucklegym.R
 import central.stu.fucklegym.databinding.ActivityMainBinding
@@ -8,6 +9,7 @@ import com.liangguo.androidkit.app.startNewActivity
 import ldh.base.BaseActivity
 import ldh.logic.OnlineData
 import ldh.ui.run.RunningActivity
+import java.util.function.LongFunction
 
 
 /**
@@ -27,12 +29,16 @@ class MainActivity: BaseActivity() {
     }
 
     private fun initViews() {
-        OnlineData.userData.observe(this) {
-            binding.user = it
+        binding.apply {
+            button.setOnClickListener {
+                RunningActivity::class.startNewActivity()
+            }
+
+            OnlineData.userData.observe(this@MainActivity) {
+                user = it
+            }
         }
-        binding.button.setOnClickListener {
-            RunningActivity::class.startNewActivity()
-        }
+
     }
 
 }
