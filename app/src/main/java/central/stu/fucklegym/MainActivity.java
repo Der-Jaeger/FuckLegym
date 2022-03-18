@@ -1,6 +1,7 @@
 package central.stu.fucklegym;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,7 +36,10 @@ import com.google.android.material.navigation.NavigationView;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Locale;
 
 import central.stu.fucklegym.fragments.ActivityFragment;
 import central.stu.fucklegym.fragments.BaseFragment;
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d("mysha1", "onCreate: " + sHA1(getApplicationContext()));
         //获取顶部工具栏
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -221,4 +226,31 @@ public class MainActivity extends AppCompatActivity{
         }
         return null;
     }
+
+    public static String sHA1(Context context){
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), PackageManager.GET_SIGNATURES);
+            byte[] cert = info.signatures[0].toByteArray();
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+            byte[] publicKey = md.digest(cert);
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < publicKey.length; i++) {
+                String appendString = Integer.toHexString(0xFF & publicKey[i])
+                        .toUpperCase(Locale.US);
+                if (appendString.length() == 1)
+                    hexString.append("0");
+                hexString.append(appendString);
+                hexString.append(":");
+            }
+            String result = hexString.toString();
+            return result.substring(0, result.length()-1);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

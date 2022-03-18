@@ -15,36 +15,35 @@
             android:id="@+id/the_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <Button
-                android:id="@+id/return_last_operation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|bottom"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="50dp"
-                android:text="撤销"
-                android:drawableLeft="@drawable/revocate"/>
-            <Button
-                android:id="@+id/to_my_position"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|bottom"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="定位"
-                android:drawableLeft="@drawable/locate"/>
-            <Button
-                android:id="@+id/save_route"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|bottom"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="100dp"
-                android:text="保存"
-                android:drawableLeft="@drawable/save"/>
-
         </com.amap.api.maps2d.MapView>
+        <Button
+            android:id="@+id/return_last_operation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|bottom"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="50dp"
+            android:text="撤销"
+            android:drawableLeft="@drawable/revocate"/>
+        <Button
+            android:id="@+id/to_my_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|bottom"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="定位"
+            android:drawableLeft="@drawable/locate"/>
+        <Button
+            android:id="@+id/save_route"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|bottom"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="100dp"
+            android:text="保存"
+            android:drawableLeft="@drawable/save"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,11 +80,12 @@
                 android:textSize="15dp"
                 android:padding="10dp"
                 android:text="在下方点击地图选取坐标点，多个坐标点形成路线"/>
+
             <ListView
                 android:id="@+id/select_poi_list"
-                android:layout_below="@+id/map_search_bar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/map_search_bar" />
         </RelativeLayout>
     </FrameLayout>
 
