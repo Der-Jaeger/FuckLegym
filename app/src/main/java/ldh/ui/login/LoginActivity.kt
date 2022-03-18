@@ -8,7 +8,9 @@ import central.stu.fucklegym.R
 import central.stu.fucklegym.databinding.ActivityLoginBinding
 import com.liangguo.androidkit.app.ToastUtil
 import com.liangguo.androidkit.app.startNewActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ldh.base.BaseActivity
 import ldh.logic.OnlineData
 import ldh.ui.login.logic.LocalUserData.password
@@ -59,14 +61,16 @@ class LoginActivity : BaseActivity() {
      * 根据本地数据直接进行登录
      */
     private fun login(onFailed: (() -> Unit)? = null) {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             OnlineData.syncLogin().apply {
-                exception?.let {
-                    onFailed?.invoke()
-                }
-                data?.let {
-                    MainActivity::class.startNewActivity()
-                    finish()
+                withContext(Dispatchers.Main) {
+                    exception?.let {
+                        onFailed?.invoke()
+                    }
+                    data?.let {
+                        MainActivity::class.startNewActivity()
+                        finish()
+                    }
                 }
             }
         }

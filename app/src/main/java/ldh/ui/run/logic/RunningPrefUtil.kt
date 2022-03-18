@@ -18,6 +18,9 @@ object RunningPrefUtil {
 
     const val DEFAULT_DISTANCE_RANGE_TO = 4f
 
+    val localRunningType: RunningType
+        get() = RunningType.getRunningTypeByPrefValue(prefRunningType)
+
 
     /**
      * 通过保存Preference保存在本地的距离范围。

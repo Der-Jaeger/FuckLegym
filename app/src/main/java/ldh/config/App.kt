@@ -4,7 +4,6 @@ import android.app.Application
 import central.stu.fucklegym.BuildConfig
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
-import com.tencent.mmkv.BuildConfig
 import com.tencent.mmkv.MMKV
 
 

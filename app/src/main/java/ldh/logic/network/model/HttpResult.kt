@@ -1,6 +1,5 @@
-package ldh.logic.network.model.login.base
+package ldh.logic.network.model
 
-import com.tencent.bugly.proguard.T
 import java.lang.Exception
 
 

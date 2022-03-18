@@ -17,7 +17,7 @@ sealed class RunningType {
     val prefValue = javaClass.simpleName
 
     /**
-     * 给用户显示的文字
+     * 给用户显示的文字，同时也是json传的文字
      */
     open val title: String = ""
 

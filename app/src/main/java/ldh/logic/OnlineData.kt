@@ -1,17 +1,25 @@
 package ldh.logic
 
 import android.content.Intent
-import androidx.lifecycle.MutableLiveData
 import com.liangguo.androidkit.app.startNewActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ldh.logic.interfaces.LoginResultCallback
 import ldh.logic.network.NetworkRepository
+import ldh.logic.network.model.current.GetCurrentResultBean
 import ldh.logic.network.model.login.LoginResult
+import ldh.logic.network.model.running.RunningLimitRequestBean
+import ldh.logic.network.model.running.RunningLimitResultBean
 import ldh.ui.login.LoginActivity
 import ldh.ui.login.logic.LocalUserData
 
+/**
+ * 乐健请求头的Map类型
+ */
+typealias LegymHeaderMap = MutableMap<String, String>
 
 /**
  * @author ldh
@@ -20,23 +28,38 @@ import ldh.ui.login.logic.LocalUserData
  */
 object OnlineData {
 
-    internal val userData = MutableLiveData<LoginResult>()
-
     /**
      * 当前的用户
      */
-    val user: LoginResult?
-        get() = userData.value
+    lateinit var userData: LoginResult
+
+    lateinit var runningLimitData: RunningLimitResultBean
+
+    /**
+     * 请求头
+     */
+    val headerMap: LegymHeaderMap
+        get() = mutableMapOf(
+            Pair("Content-type", "application/json"),
+            Pair("Authorization", "Bearer " + userData.accessToken)
+        )
+
+    private val loginDataFlow = MutableSharedFlow<LoginResult>()
+
+    private val runningLimitFlow = MutableSharedFlow<RunningLimitResultBean>()
+
+    private var currentDataFlow = MutableSharedFlow<GetCurrentResultBean>()
 
     /**
      * 获取用户，在回调中会传回一个非空的[LoginResult]对象。
      */
-    fun getUser(block: (user: LoginResult) -> Unit) {
-        user?.let {
-            block(it)
+    @Deprecated("已废弃，以后删了")
+    fun getUser(callback: LoginResultCallback) {
+        userData?.let {
+            callback.onResult(it)
         } ?: loginAndDo {
-            user?.let {
-                block(it)
+            userData?.let {
+                callback.onResult(it)
             }
         }
     }
@@ -62,7 +85,7 @@ object OnlineData {
                     data?.let {
                         //登录成功
                         withContext(Dispatchers.Main) {
-                            userData.value = it
+                            loginDataFlow.emit(it)
                             runnable?.run()
                         }
                     }
@@ -78,7 +101,36 @@ object OnlineData {
 
     suspend fun syncLogin() =
         NetworkRepository.login(LocalUserData.userId, LocalUserData.password).apply {
-            data?.let { userData.postValue(it) }
+            data?.let { loginDataFlow.emit(it) }
         }
+
+    init {
+        CoroutineScope(Dispatchers.IO).apply {
+            launch {
+                loginDataFlow.collect { loginResult ->
+                    //登录之后要请求getCurrent
+                    userData = loginResult
+                    NetworkRepository.getCurrentSemesterId().data?.let {
+                        currentDataFlow.emit(it)
+                    }
+                }
+            }
+
+            launch {
+                currentDataFlow.collect { currentResultBean ->
+                    //请求到当前数据后要请求跑步限制的信息
+                    NetworkRepository.getRunningLimit(RunningLimitRequestBean(currentResultBean.id)).data?.let {
+                        runningLimitFlow.emit(it)
+                    }
+                }
+            }
+
+            launch {
+                runningLimitFlow.collect {
+                    runningLimitData = it
+                }
+            }
+        }
+    }
 
 }
