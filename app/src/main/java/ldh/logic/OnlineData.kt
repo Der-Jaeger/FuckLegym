@@ -2,6 +2,7 @@ package ldh.logic
 
 import android.content.Intent
 import com.liangguo.androidkit.app.startNewActivity
+import fucklegym.top.entropy.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -35,6 +36,8 @@ object OnlineData {
 
     lateinit var runningLimitData: RunningLimitResultBean
 
+    lateinit var currentData: GetCurrentResultBean
+
     /**
      * 请求头
      */
@@ -63,6 +66,9 @@ object OnlineData {
             }
         }
     }
+
+    val user: User
+        get() = User(LocalUserData.userId, LocalUserData.password)
 
     /**
      * 重新登录并且在登录结束后做什么事情...
@@ -119,6 +125,7 @@ object OnlineData {
             launch {
                 currentDataFlow.collect { currentResultBean ->
                     //请求到当前数据后要请求跑步限制的信息
+                    currentData = currentResultBean
                     NetworkRepository.getRunningLimit(RunningLimitRequestBean(currentResultBean.id)).data?.let {
                         runningLimitFlow.emit(it)
                     }

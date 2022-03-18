@@ -1,8 +1,12 @@
 package ldh.logic
 
+import android.util.Log
 import central.stu.fucklegym.Encrypter
-import fucklegym.top.entropy.NetworkSupport.UploadStatus
+import fucklegym.top.entropy.NetworkSupport
 import fucklegym.top.entropy.PathGenerator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ldh.config.AppConfig.LEGYM_APP_VERSION
 import ldh.config.AppConfig.legymDateStringFormatter
 import ldh.logic.network.model.running.RoutineLine
@@ -60,6 +64,7 @@ object BeanRepository {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
         return UploadRunningDetailsRequestBean(
             appVersion = LEGYM_APP_VERSION,
             avePace = avePace,
@@ -75,7 +80,7 @@ object BeanRepository {
             paceRange = pace,
             routineLine = runPoints,
             scoringType = 1,
-            semesterId = OnlineData.userData.semesterId,
+            semesterId = OnlineData.currentData.id,
             signDigital = Encrypter.getSha1(
                 totMileage
                     .toString() + "1"
@@ -87,12 +92,13 @@ object BeanRepository {
                         + totMileage
                         + "1" + Encrypter.run_salt
             ),
-            signPoint = mutableListOf(),
+            signPoint = listOf(),
             startTime = legymDateStringFormatter.format(startTime),
             systemVersion = systemVersion,
             totalMileage = totMileage,
-            totalPart = 1.0,
-            type = type.title
+            totalPart = 0.0,
+            type = type.title,
+            uneffectiveReason = ""
             )
     }
 

@@ -14,7 +14,7 @@ object AppConfig {
     /**
      * 乐健体育的版本号
      */
-    const val LEGYM_APP_VERSION = "3.1.1"
+    const val LEGYM_APP_VERSION = "3.1.0"
 
     @SuppressLint("SimpleDateFormat")
     val legymDateStringFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")

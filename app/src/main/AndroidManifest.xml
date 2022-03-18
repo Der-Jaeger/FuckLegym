@@ -35,7 +35,7 @@
         android:theme="@style/Theme.FuckLegym">
         <activity android:name=".MainActivity" />
         <activity android:name=".OnlineMaps" />
-        <activity android:name=".CourseSignUp" />
+        <activity android:name=".CourseSignUpActivity" />
         <activity android:name=".SignUp" />
         <activity android:name=".MapSelector" />
 
