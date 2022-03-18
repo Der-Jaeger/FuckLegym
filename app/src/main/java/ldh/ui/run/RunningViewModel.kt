@@ -7,21 +7,17 @@ import androidx.lifecycle.viewModelScope
 import central.stu.fucklegym.R
 import com.liangguo.androidkit.app.ToastUtil
 import com.liangguo.easyingcontext.EasyingContext.context
-import com.tencent.bugly.proguard.w
-import fucklegym.top.entropy.NetworkSupport
 import fucklegym.top.entropy.PathGenerator
 import fucklegym.top.entropy.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ldh.logic.NetworkRepository
+import ldh.logic.network.NetworkRepository
 import ldh.logic.OnlineData
 import ldh.ui.run.logic.RunningPrefUtil
 import ldh.ui.run.logic.RunningPrefUtil.DEFAULT_DISTANCE_RANGE_FROM
 import ldh.ui.run.logic.RunningPrefUtil.DEFAULT_DISTANCE_RANGE_TO
 import ldh.ui.run.logic.RunningType
-import java.io.IOException
-import java.util.*
 
 
 /**
