@@ -7,5 +7,8 @@
 
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*  # 混淆时所采用的算法
 
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+-keep class android.support.**{*;}
 
 -libraryjars libs/fastjson-1.2.76.jar        #混淆第三方jar包，其中xxx为jar包名
