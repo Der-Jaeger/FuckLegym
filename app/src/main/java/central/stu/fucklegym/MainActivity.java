@@ -35,7 +35,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Locale;
 
-import central.stu.fucklegym.fragments.BaseFragment;
 import fucklegym.top.entropy.NetworkSupport;
 import fucklegym.top.entropy.User;
 import ldh.ui.run.RunningActivity;
@@ -76,7 +75,6 @@ public class MainActivity extends AppCompatActivity{
     private boolean logined = false;
     private DrawerLayout drawerLayout;//滑动菜单
     private NavigationView navigationView;//滑动导航栏
-    private BaseFragment currentFragment;//当前主页面的Fragment
     private Toolbar toolbar;//工具栏
 
     @Override
@@ -129,13 +127,6 @@ public class MainActivity extends AppCompatActivity{
         return true;
     }
 
-    public void changeFragment(BaseFragment fragment){
-        toolbar.setTitle(fragment.getTitle());
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.the_activities_layout, fragment);
-        transaction.commit();
-    }
     /**
      * 设置菜单选项的每个按钮事件
      *
