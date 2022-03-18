@@ -1,6 +1,7 @@
 package ldh.ui.login
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -8,6 +9,10 @@ import central.stu.fucklegym.R
 import central.stu.fucklegym.databinding.ActivityLoginBinding
 import com.liangguo.androidkit.app.ToastUtil
 import com.liangguo.androidkit.app.startNewActivity
+import com.liangguo.androidkit.color.ColorUtil
+import com.liangguo.androidkit.color.resolveColor
+import com.liangguo.androidkit.commons.smartNotifyValue
+import com.zackratos.ultimatebarx.ultimatebarx.statusBarOnly
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -36,6 +41,10 @@ class LoginActivity : BaseActivity() {
             initUI()
         }
         super.onCreate(savedInstanceState)
+        statusBarOnly {
+            fitWindow = false
+            light = false
+        }
     }
 
     private fun initUI() {
@@ -51,10 +60,30 @@ class LoginActivity : BaseActivity() {
                 }
             }
 
-            mViewModel.agree.observe(this@LoginActivity) {
-                viewModel = mViewModel
+            mViewModel.dontPublic.observe(this@LoginActivity) {
+                checkbox1.isChecked = it
+                checkButtonEnable()
+            }
+
+            mViewModel.responsibleSelf.observe(this@LoginActivity) {
+                checkbox2.isChecked = it
+                checkButtonEnable()
+            }
+
+            checkbox1.setOnCheckedChangeListener { _, checked ->
+                mViewModel.dontPublic.smartNotifyValue = checked
+            }
+
+            checkbox2.setOnCheckedChangeListener { _, checked ->
+                mViewModel.responsibleSelf.smartNotifyValue = checked
             }
         }
+    }
+
+    private fun checkButtonEnable() {
+        Log.e("测试", "1" + mViewModel.dontPublic.value + "  2" + mViewModel.responsibleSelf.value)
+        mDataBinding.buttonLogin.isEnabled =
+            (mViewModel.dontPublic.value == true && mViewModel.responsibleSelf.value == true)
     }
 
     /**
@@ -63,6 +92,7 @@ class LoginActivity : BaseActivity() {
     private fun login(onFailed: (() -> Unit)? = null) {
         lifecycleScope.launch(Dispatchers.IO) {
             OnlineData.syncLogin().apply {
+                Log.e("登录完了", "")
                 withContext(Dispatchers.Main) {
                     exception?.let {
                         onFailed?.invoke()

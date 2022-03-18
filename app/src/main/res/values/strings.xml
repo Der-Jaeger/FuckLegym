@@ -31,4 +31,8 @@
     <string name="semester_mileage">本学期里程</string>
     <string name="sign_activity">活动签到</string>
     <string name="sign_course">课程签到</string>
+    <string name="cao_dan">该软件仅供开发者调试学习参考使用\n严禁用于违法违禁等不良行为；使用本程序所造成的一切后果由用户自行承担！</string>
+    <string name="sign_out">注销登录</string>
+    <string name="take_the_consequences_self">使用本程序所造成的一切后果由我自己承担</string>
+    
 </resources>

@@ -12,8 +12,13 @@ import androidx.lifecycle.ViewModel
 class LoginViewModel: ViewModel() {
 
     /**
-     * 同意软件协议
+     * 低调使用
      */
-    val agree = MutableLiveData(false)
+    val dontPublic = MutableLiveData(false)
+
+    /**
+     * 自己负责
+     */
+    val responsibleSelf = MutableLiveData(false)
 
 }

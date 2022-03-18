@@ -12,6 +12,7 @@ import ldh.logic.network.model.HttpResult
 import ldh.logic.network.model.login.LoginRequestBean
 import ldh.logic.network.model.running.RunningLimitRequestBean
 import ldh.logic.network.model.running.UploadRunningDetailsRequestBean
+import ldh.logic.network.model.running.totalRunning.TotalRunningRequestBean
 import ldh.logic.network.service.EducationService
 import ldh.logic.network.service.LoginService
 import ldh.logic.network.service.RunningService
@@ -91,6 +92,13 @@ object NetworkRepository {
      */
     suspend fun getRunningLimit(requestBean: RunningLimitRequestBean) = catchError {
         runningService.getRunningLimit(headerMap, requestBean)
+    }
+
+    /**
+     * 获取已经跑了多少公里了
+     */
+    suspend fun getTotalRunning(requestBean: TotalRunningRequestBean) = catchError {
+        runningService.getTotalRunning(headerMap, requestBean)
     }
 
 
