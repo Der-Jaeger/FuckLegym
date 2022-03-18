@@ -45,101 +45,6 @@ import fucklegym.top.entropy.User;
 import ldh.logic.OnlineData;
 import ldh.ui.run.RunningActivity;
 
-class Jump extends Thread {
-    private Activity cont;
-
-    public Jump(Activity con) {
-        this.cont = con;
-    }
-
-    @Override
-    public void run() {
-        EditText username = (EditText) cont.findViewById(R.id.editText_username);
-        EditText password = (EditText) cont.findViewById(R.id.editText_password);
-        String user = username.getText().toString();
-        String pass = password.getText().toString();
-        Intent intent = new Intent(cont, RunningActivity.class);
-        intent.putExtra("username", user);
-        intent.putExtra("password", pass);
-        cont.startActivity(intent);
-    }
-}
-
-class SignJump extends Thread {
-    private Activity cont;
-
-    public SignJump(Activity con) {
-        this.cont = con;
-    }
-
-    @Override
-    public void run() {
-        EditText username = (EditText) cont.findViewById(R.id.editText_username);
-        EditText password = (EditText) cont.findViewById(R.id.editText_password);
-        String user = username.getText().toString();
-        String pass = password.getText().toString();
-        Intent intent = new Intent(cont, SignUp.class);
-        intent.putExtra("username", user);
-        intent.putExtra("password", pass);
-        cont.startActivity(intent);
-//        cont.finish();
-    }
-
-    void save(String username, String password) {
-
-    }
-}
-
-class CourseSign extends Thread {
-    private Activity cont;
-
-    public CourseSign(Activity con) {
-        this.cont = con;
-    }
-
-    @Override
-    public void run() {
-        EditText username = (EditText) cont.findViewById(R.id.editText_username);
-        EditText password = (EditText) cont.findViewById(R.id.editText_password);
-        String user = username.getText().toString();
-        String pass = password.getText().toString();
-        Intent intent = new Intent(cont, CourseSignUp.class);
-        intent.putExtra("username", user);
-        intent.putExtra("password", pass);
-        cont.startActivity(intent);
-//        cont.finish();
-    }
-}
-
-//获取更新信息
-class UpdateMsgThread extends Thread {
-    public static final int SUCCESS = 0;
-    public static final int FAIL = 1;
-    private Handler handler;
-
-    public UpdateMsgThread(Handler handler) {
-        this.handler = handler;
-    }
-
-    @Override
-    public void run() {
-        try {
-            JSONObject jsonObject = NetworkSupport.getForReturn("https://foreverddb.github.io/FuckLegym/msg.json", new HashMap<String, String>());
-            Log.d("getUpdate", "showUpdateMsg: " + jsonObject.toJSONString());
-            Message msg = handler.obtainMessage();
-            msg.what = SUCCESS;
-            msg.obj = jsonObject;
-            handler.sendMessage(msg);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Message msg = handler.obtainMessage();
-            msg.what = FAIL;
-            msg.obj = null;
-            handler.sendEmptyMessage(FAIL);
-        }
-    }
-}
-
 //判断是否更新
 class CheckUpdateThread extends Thread {
     public static final int SUCCESS = 0;
@@ -182,7 +87,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_layout);
+        setContentView(R.layout.activity_main);
         //获取顶部工具栏
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -200,16 +105,15 @@ public class MainActivity extends AppCompatActivity{
                 //判断选项并替换Fragment
                 switch (item.getItemId()){
                     case R.id.nav_run:
-                        currentFragment = new FreeRunFragment(getString(R.string.running_title), OnlineData.INSTANCE.getUser());
+                        startActivity(new Intent(MainActivity.this, RunningActivity.class));
                         break;
                     case R.id.nav_activity:
-                        currentFragment = new ActivityFragment(getString(R.string.activity_title), OnlineData.INSTANCE.getUser());
+                        startActivity(new Intent(MainActivity.this, SignUp.class));
                         break;
                     case R.id.nav_course:
-
+                        startActivity(new Intent(MainActivity.this, CourseSignUp.class));
                         break;
                 }
-                changeFragment(currentFragment);
                 drawerLayout.closeDrawers();
                 return true;
             }
@@ -256,37 +160,6 @@ public class MainActivity extends AppCompatActivity{
         }
         return true;
     }
-
-    private void jumpFreeRun() {
-        Jump jmp = new Jump(this);
-        jmp.start();
-    }
-
-    private void jumpSignUp() {
-        SignJump jmp = new SignJump(this);
-        jmp.start();
-    }
-
-    private void jumpCourseSignUp() {
-        CourseSign jmp = new CourseSign(this);
-        jmp.start();
-    }
-
-    //    private void jumpWeb(String url){
-//        Intent intent = new Intent(MainActivity.this, WebViewStarter.class);
-//        intent.putExtra("url", url);
-//        startActivity(intent);
-//    }
-    //保存账号密码
-    void saveUser(String username, String password) {
-        SharedPreferences userInfo = getSharedPreferences("user", MODE_PRIVATE);
-        SharedPreferences.Editor userEdit = userInfo.edit();
-        userEdit.putString("username", username);
-        userEdit.putString("password", password);
-        userEdit.apply();
-        Toast.makeText(MainActivity.this, "账号密码保存成功！", Toast.LENGTH_SHORT).show();
-    }
-
 
     //检查更新
     private void checkUpdate() {
