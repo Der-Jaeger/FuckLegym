@@ -24,6 +24,14 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="PrivateResource" />
 
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="33dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/toolbar"
+            android:background="@android:color/transparent" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image_header"
             android:layout_width="80dp"
@@ -128,6 +136,17 @@
                                 app:layout_constraintTop_toTopOf="@+id/text_semester_mileage_current"
                                 tools:text="/150km" />
 
+                            <com.google.android.material.progressindicator.LinearProgressIndicator
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_semester_mileage_current"
+                                style="@style/Widget.Material3.LinearProgressIndicator"
+                                android:layout_marginVertical="15dp"
+                                android:layout_marginHorizontal="10dp"
+                                app:trackCornerRadius="4dp"
+                                android:indeterminateTint="?attr/colorPrimary"
+                                android:id="@+id/progress" />
+
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -179,6 +198,17 @@
                         app:layout_constraintStart_toEndOf="@id/button_sign_activity"
                         app:layout_constraintTop_toBottomOf="@id/spacer_bottom" />
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextAppearance.Material3.LabelSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:alpha="0.5"
+                        android:gravity="center"
+                        android:paddingHorizontal="20dp"
+                        android:text="@string/cao_dan"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/button_sign_activity" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

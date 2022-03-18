@@ -1,6 +1,7 @@
 package ldh.logic
 
 import android.content.Intent
+import android.util.Log
 import com.liangguo.androidkit.app.startNewActivity
 import fucklegym.top.entropy.User
 import kotlinx.coroutines.CoroutineScope
@@ -10,6 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ldh.logic.interfaces.LoginResultCallback
 import ldh.logic.network.NetworkRepository
+import ldh.logic.network.model.HttpResult
 import ldh.logic.network.model.current.GetCurrentResultBean
 import ldh.logic.network.model.login.LoginResult
 import ldh.logic.network.model.running.RunningLimitRequestBean
@@ -49,9 +51,9 @@ object OnlineData {
 
     private val loginDataFlow = MutableSharedFlow<LoginResult>()
 
-    private val runningLimitFlow = MutableSharedFlow<RunningLimitResultBean>()
+    val runningLimitFlow = MutableSharedFlow<RunningLimitResultBean>()
 
-    private var currentDataFlow = MutableSharedFlow<GetCurrentResultBean>()
+    var currentDataFlow = MutableSharedFlow<GetCurrentResultBean>()
 
     /**
      * 获取用户，在回调中会传回一个非空的[LoginResult]对象。
@@ -105,18 +107,30 @@ object OnlineData {
         }
     }
 
-    suspend fun syncLogin() =
-        NetworkRepository.login(LocalUserData.userId, LocalUserData.password).apply {
-            data?.let { loginDataFlow.emit(it) }
+    suspend fun syncLogin(): HttpResult<LoginResult?> {
+        val result = NetworkRepository.login(LocalUserData.userId, LocalUserData.password)
+        result.data?.let { loginResult ->
+            userData = loginResult
+            NetworkRepository.getCurrentSemesterId().data?.let { currentResultBean ->
+                currentData = currentResultBean
+                NetworkRepository.getRunningLimit(RunningLimitRequestBean(currentResultBean.id)).data?.let {
+                    runningLimitData = it
+                }
+            }
         }
+        return result
+    }
 
     init {
         CoroutineScope(Dispatchers.IO).apply {
             launch {
                 loginDataFlow.collect { loginResult ->
+                    Log.e("收集到数据了", loginResult.toString())
+
                     //登录之后要请求getCurrent
                     userData = loginResult
                     NetworkRepository.getCurrentSemesterId().data?.let {
+                        Log.e("getCurrentSemesterId", it.toString())
                         currentDataFlow.emit(it)
                     }
                 }
@@ -125,8 +139,10 @@ object OnlineData {
             launch {
                 currentDataFlow.collect { currentResultBean ->
                     //请求到当前数据后要请求跑步限制的信息
+                    Log.e("收集到数据了", currentResultBean.toString())
                     currentData = currentResultBean
                     NetworkRepository.getRunningLimit(RunningLimitRequestBean(currentResultBean.id)).data?.let {
+                        Log.e("getRunningLimit", it.toString())
                         runningLimitFlow.emit(it)
                     }
                 }
