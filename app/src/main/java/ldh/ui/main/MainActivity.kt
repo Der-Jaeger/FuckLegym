@@ -1,7 +1,6 @@
 package ldh.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.databinding.DataBindingUtil
 import central.stu.fucklegym.R
 import central.stu.fucklegym.databinding.ActivityMainBinding
@@ -9,7 +8,6 @@ import com.liangguo.androidkit.app.startNewActivity
 import ldh.base.BaseActivity
 import ldh.logic.OnlineData
 import ldh.ui.run.RunningActivity
-import java.util.function.LongFunction
 
 
 /**
@@ -17,7 +15,7 @@ import java.util.function.LongFunction
  * 时间: 2022/3/18 11:30
  * 邮箱: 2637614077@qq.com
  */
-class MainActivity: BaseActivity() {
+class MainActivity : BaseActivity() {
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
@@ -34,9 +32,7 @@ class MainActivity: BaseActivity() {
                 RunningActivity::class.startNewActivity()
             }
 
-            OnlineData.userData.observe(this@MainActivity) {
-                user = it
-            }
+            user = OnlineData.userData
         }
 
     }

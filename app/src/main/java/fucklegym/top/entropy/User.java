@@ -30,7 +30,10 @@ public class User {
     @NotNull
     public final Object value = null;
 
-    public User() {}
+    public User(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
     public User(String username, String password){
         this.username = username;
         this.password = password;

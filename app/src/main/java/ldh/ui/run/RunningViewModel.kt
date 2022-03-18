@@ -1,19 +1,19 @@
 package ldh.ui.run
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import central.stu.fucklegym.R
-import com.liangguo.androidkit.app.ToastUtil
 import com.liangguo.easyingcontext.EasyingContext.context
 import fucklegym.top.entropy.PathGenerator
-import fucklegym.top.entropy.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ldh.logic.BeanRepository
+import ldh.logic.OnlineData.runningLimitData
 import ldh.logic.network.NetworkRepository
-import ldh.logic.OnlineData
 import ldh.ui.run.logic.RunningPrefUtil
 import ldh.ui.run.logic.RunningPrefUtil.DEFAULT_DISTANCE_RANGE_FROM
 import ldh.ui.run.logic.RunningPrefUtil.DEFAULT_DISTANCE_RANGE_TO
@@ -66,20 +66,33 @@ class RunningViewModel : ViewModel() {
      */
     fun uploadRunningData() {
         buttonClickable.value = false
-        viewModelScope.launch(Dispatchers.IO) {
-            OnlineData.user?.let {
-                val e = try {
-                    NetworkRepository.uploadRunningData(it as User)
-                   null
-                } catch (e: Exception) { e }
-
-                withContext(Dispatchers.Main) {
-                    e?.let {
-                        ToastUtil.error(context.getString(R.string.upload_failed))
-                        buttonClickable.value = true
-                    } ?: ToastUtil.success(context.getString(R.string.upload_success))
+        viewModelScope.launch {
+            NetworkRepository.uploadRunningDetail(
+                BeanRepository.generateRunningDetails(
+                    distanceRange = RunningPrefUtil.prefDistanceRange,
+                    map = RunningPrefUtil.prefRunningMap,
+                    limitationsGoalsSexInfoId = runningLimitData.limitationsGoalsSexInfoId,
+                    type = RunningType.getRunningTypeByPrefValue(RunningPrefUtil.prefRunningType)
+                ).apply {
+                    Log.e("跑步数据限制", runningLimitData.toString())
+                    Log.e("上传跑步数据请求", toString())
                 }
+            ).apply {
+                Log.e("上传跑步数据返回", toString())
             }
+//            OnlineData.userData?.let {
+//                val e = try {
+//                    NetworkRepository.uploadRunningData()
+//                   null
+//                } catch (e: Exception) { e }
+//
+//                withContext(Dispatchers.Main) {
+//                    e?.let {
+//                        ToastUtil.error(context.getString(R.string.upload_failed))
+//                        buttonClickable.value = true
+//                    } ?: ToastUtil.success(context.getString(R.string.upload_success))
+//                }
+//            }
         }
     }
 

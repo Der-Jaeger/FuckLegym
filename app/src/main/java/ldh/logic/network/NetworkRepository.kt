@@ -1,14 +1,14 @@
 package ldh.logic.network
 
-import fucklegym.top.entropy.User
 import ldh.logic.OnlineData
+import ldh.logic.OnlineData.headerMap
+import ldh.logic.network.model.HttpResult
 import ldh.logic.network.model.login.LoginRequestBean
-import ldh.logic.network.model.login.base.HttpResult
+import ldh.logic.network.model.running.RunningLimitRequestBean
+import ldh.logic.network.model.running.UploadRunningDetailsRequestBean
+import ldh.logic.network.service.EducationService
 import ldh.logic.network.service.LoginService
-import ldh.ui.run.logic.RunningPrefUtil
-import ldh.ui.run.logic.RunningType
-import java.io.IOException
-import java.util.*
+import ldh.logic.network.service.RunningService
 
 
 /**
@@ -18,7 +18,9 @@ import java.util.*
  */
 object NetworkRepository {
 
-    val loginService by lazy { ServiceCreator.create<LoginService>() }
+    private val loginService by lazy { ServiceCreator.create<LoginService>() }
+    private val runningService by lazy { ServiceCreator.create<RunningService>() }
+    private val educationService by lazy { ServiceCreator.create<EducationService>() }
 
     /**
      * 进行登录
@@ -28,35 +30,23 @@ object NetworkRepository {
     }
 
     /**
-     * 上传跑步数据。
+     * 上传跑步数据
      */
-    @Throws
-    @Deprecated("这里是基于以前的User来设计的，以后应该重写")
-    fun uploadRunningData(user: User) {
-        //跑步的距离，在范围中取随机值。
-        val distance = RunningPrefUtil.prefDistanceRange.let {
-            kotlin.random.Random.nextDouble(
-                it.first().toDouble(),
-                it.last().toDouble()
-            )
-        }
-
-        //跑步的地图
-        val map = RunningPrefUtil.prefRunningMap
-
-        //跑步类型
-        val type = RunningType.getRunningTypeByPrefValue(RunningPrefUtil.prefRunningType).title
-
-        val random = Random(System.currentTimeMillis())
-        val endTime = Date()
-        val startTime =
-            Date(endTime.time - (10 + random.nextInt(10)) * 60 * 1000 - random.nextInt(60) * 1000)
-        try {
-            user.uploadRunningDetail(startTime, endTime, distance, distance, map, type)
-        } catch (e: IOException) {
-            throw e
-        }
+    suspend fun uploadRunningDetail(requestBean: UploadRunningDetailsRequestBean) = catchError {
+        runningService.uploadRunningDetails(headerMap, requestBean)
     }
+
+    suspend fun getCurrentSemesterId() = catchError {
+        educationService.getCurrent(headerMap)
+    }
+
+    /**
+     * 获取跑步的规则限制
+     */
+    suspend fun getRunningLimit(requestBean: RunningLimitRequestBean) = catchError {
+        runningService.getRunningLimit(headerMap, requestBean)
+    }
+
 
     /**
      * 所有的网络请求都统一经过这个函数

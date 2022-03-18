@@ -2,7 +2,7 @@ package ldh.logic.network.service
 
 import ldh.logic.network.model.login.LoginRequestBean
 import ldh.logic.network.model.login.LoginResult
-import ldh.logic.network.model.login.base.HttpResult
+import ldh.logic.network.model.HttpResult
 import retrofit2.http.Body
 import retrofit2.http.POST
 

@@ -138,13 +138,11 @@ public class SignUp extends AppCompatActivity {
     public HashMap<String ,String> theacts;
     public ArrayList<String> checkedActs = new ArrayList<>();
     private boolean signNotify = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
-//        user = OnlineData.INSTANCE.getUser();
-        user = new User();
 
         handler = new Handler(){
             public void handleMessage(Message msg) {

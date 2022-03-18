@@ -22,7 +22,7 @@ import ldh.ui.run.logic.RunningType
  * 时间: 2022/3/17 11:25
  * 邮箱: 2637614077@qq.com
  */
-class RunningActivity: CollapsingToolbarActivity() {
+class RunningActivity : CollapsingToolbarActivity() {
 
     private val mDataBinding by lazy {
         ActivityRunningBinding.inflate(layoutInflater, contentViewContainer, true)
@@ -48,7 +48,7 @@ class RunningActivity: CollapsingToolbarActivity() {
 
     private fun initDataListeners() {
         mViewModel.distanceRange.observe(this) {
-            mDataBinding.textSliderValue.text = RANGE_FORMAT.format(it.first(),it.last())
+            mDataBinding.textSliderValue.text = RANGE_FORMAT.format(it.first(), it.last())
         }
         mViewModel.runningType.observe(this) {
             mDataBinding.settingChooseType.subtitleTextView.text = it.title
@@ -67,10 +67,12 @@ class RunningActivity: CollapsingToolbarActivity() {
         mDataBinding.rangeSlider.addOnChangeListener { slider, _, _ ->
             mViewModel.distanceRange.value = slider.values
         }
-        mDataBinding.rangeSlider.addOnSliderTouchListener(object :RangeSlider.OnSliderTouchListener {
+        mDataBinding.rangeSlider.addOnSliderTouchListener(object :
+            RangeSlider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: RangeSlider) {}
             override fun onStopTrackingTouch(slider: RangeSlider) {
-                RunningPrefUtil.prefDistanceRange = listOf(slider.values.first(), slider.values.last())
+                RunningPrefUtil.prefDistanceRange =
+                    listOf(slider.values.first(), slider.values.last())
             }
         })
 

@@ -101,9 +101,6 @@ public class CourseSignUp extends AppCompatActivity {
             actionBar.hide();
         }
 
-//        user = OnlineData.INSTANCE.getUser();
-        user = new User();
-
         TextView courseName = (TextView) findViewById(R.id.courseName);
         TextView canSign = (TextView) findViewById(R.id.can_sign);
         Handler handler = new Handler(){
