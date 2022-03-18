@@ -1,7 +1,8 @@
 {
-  "current_version": "3.4.2",
+  "current_version": "3.4.3",
   "msg": [
-    "修复部分机型闪退的问题",
+    "请务必至Github更新此版本",
+    "修复更新后无法安装的问题",
     "大家速速去看《赛马娘》！"
   ],
   "update_url": "https://github.com/Foreverddb/FuckLegym/releases"
