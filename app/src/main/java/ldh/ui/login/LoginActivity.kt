@@ -1,6 +1,5 @@
 package ldh.ui.login
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -9,17 +8,9 @@ import central.stu.fucklegym.R
 import central.stu.fucklegym.databinding.ActivityLoginBinding
 import com.liangguo.androidkit.app.ToastUtil
 import com.liangguo.androidkit.app.startNewActivity
-import com.liangguo.easyingcontext.EasyingContext.currentActivity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ldh.base.BaseActivity
 import ldh.logic.OnlineData
-import ldh.logic.OnlineData.user
-import ldh.logic.network.NetworkRepository
-import ldh.logic.network.model.login.LoginResult
-import ldh.logic.network.model.login.base.HttpResult
-import ldh.ui.login.logic.LocalUserData
 import ldh.ui.login.logic.LocalUserData.password
 import ldh.ui.login.logic.LocalUserData.userId
 import ldh.ui.main.MainActivity
@@ -69,7 +60,7 @@ class LoginActivity : BaseActivity() {
      */
     private fun login(onFailed: (() -> Unit)? = null) {
         lifecycleScope.launch {
-            NetworkRepository.login(userId, password).apply {
+            OnlineData.syncLogin().apply {
                 exception?.let {
                     onFailed?.invoke()
                 }

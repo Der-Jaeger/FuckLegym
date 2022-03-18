@@ -1,6 +1,7 @@
 package ldh.logic.network
 
 import fucklegym.top.entropy.User
+import ldh.logic.OnlineData
 import ldh.logic.network.model.login.LoginRequestBean
 import ldh.logic.network.model.login.base.HttpResult
 import ldh.logic.network.service.LoginService
@@ -25,7 +26,7 @@ object NetworkRepository {
     suspend fun login(userId: String?, password: String?) = catchError {
         loginService.login(LoginRequestBean(password = password, userName = userId))
     }
-    
+
     /**
      * 上传跑步数据。
      */
@@ -34,11 +35,11 @@ object NetworkRepository {
     fun uploadRunningData(user: User) {
         //跑步的距离，在范围中取随机值。
         val distance = RunningPrefUtil.prefDistanceRange.let {
-                kotlin.random.Random.nextDouble(
-                    it.first().toDouble(),
-                    it.last().toDouble()
-                )
-            }
+            kotlin.random.Random.nextDouble(
+                it.first().toDouble(),
+                it.last().toDouble()
+            )
+        }
 
         //跑步的地图
         val map = RunningPrefUtil.prefRunningMap
@@ -57,9 +58,20 @@ object NetworkRepository {
         }
     }
 
+    /**
+     * 所有的网络请求都统一经过这个函数
+     */
     private suspend fun <T> catchError(block: suspend () -> HttpResult<T?>): HttpResult<T?> {
         return try {
-            block()
+            var result = block()
+            if (result.code == 401 || result.code == 1002) {
+                //Token失效，重新登录
+                OnlineData.syncLogin().data?.let {
+                    //登录成功，再请求一次
+                    result = catchError { block() }
+                }
+            }
+            result
         } catch (e: Exception) {
             if (e is retrofit2.HttpException) {
                 HttpResult(

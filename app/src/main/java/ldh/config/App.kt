@@ -1,6 +1,7 @@
 package ldh.config
 
 import android.app.Application
+import central.stu.fucklegym.BuildConfig
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
 import com.tencent.mmkv.MMKV
@@ -21,7 +22,7 @@ class App : Application() {
     private fun initConfig() {
 
         //配置Bugly
-        Bugly.init(this, "9333bb0d44", true)
+        Bugly.init(this, "9333bb0d44", BuildConfig.DEBUG)
         Beta.checkUpgrade(false, true)
 
         MMKV.initialize(this)
