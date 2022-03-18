@@ -7,21 +7,17 @@ import androidx.lifecycle.viewModelScope
 import central.stu.fucklegym.R
 import com.liangguo.androidkit.app.ToastUtil
 import com.liangguo.easyingcontext.EasyingContext.context
-import com.tencent.bugly.proguard.w
-import fucklegym.top.entropy.NetworkSupport
 import fucklegym.top.entropy.PathGenerator
 import fucklegym.top.entropy.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ldh.logic.NetworkRepository
+import ldh.logic.network.NetworkRepository
 import ldh.logic.OnlineData
 import ldh.ui.run.logic.RunningPrefUtil
 import ldh.ui.run.logic.RunningPrefUtil.DEFAULT_DISTANCE_RANGE_FROM
 import ldh.ui.run.logic.RunningPrefUtil.DEFAULT_DISTANCE_RANGE_TO
 import ldh.ui.run.logic.RunningType
-import java.io.IOException
-import java.util.*
 
 
 /**
@@ -71,7 +67,7 @@ class RunningViewModel : ViewModel() {
     fun uploadRunningData() {
         buttonClickable.value = false
         viewModelScope.launch(Dispatchers.IO) {
-            OnlineData.user.let {
+            OnlineData.user?.let {
                 val e = try {
                     NetworkRepository.uploadRunningData(it as User)
                    null
@@ -79,7 +75,7 @@ class RunningViewModel : ViewModel() {
 
                 withContext(Dispatchers.Main) {
                     e?.let {
-                        ToastUtil.success(context.getString(R.string.upload_failed))
+                        ToastUtil.error(context.getString(R.string.upload_failed))
                         buttonClickable.value = true
                     } ?: ToastUtil.success(context.getString(R.string.upload_success))
                 }

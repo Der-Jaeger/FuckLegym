@@ -143,7 +143,8 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        user = OnlineData.INSTANCE.getUser();
+//        user = OnlineData.INSTANCE.getUser();
+        user = new User();
 
         handler = new Handler(){
             public void handleMessage(Message msg) {

@@ -20,7 +20,6 @@ object LocalUserData {
     var userId: String?
         get() = MMKV.defaultMMKV().decodeString(KEY_USER_ID)
         set(value) {
-            OnlineData.user.username = value
             MMKV.defaultMMKV().encode(KEY_USER_ID, value)
         }
 
@@ -31,7 +30,6 @@ object LocalUserData {
     var password: String?
         get() = MMKV.defaultMMKV().decodeString(KEY_USER_PASSWORD)
         set(value) {
-            OnlineData.user.password = value
             MMKV.defaultMMKV().encode(KEY_USER_PASSWORD, value)
         }
 }

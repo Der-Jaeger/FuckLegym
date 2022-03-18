@@ -4,37 +4,43 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="ldh.ui.login.LoginViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="?attr/colorSurface"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image_bg_head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/bg_home_orange" />
+            android:background="@drawable/bg_home_orange"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextAppearance.Material3.DisplaySmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginBottom="45dp"
             android:text="@string/login"
             android:textColor="@color/white"
-            style="@style/TextAppearance.Material3.DisplaySmall"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/image_bg_head"
-            android:layout_marginStart="40dp"
-            android:layout_marginBottom="45dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
-          android:layout_margin="20dp"
             android:id="@+id/edit_layout1"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/image_bg_head" >
+            android:layout_margin="20dp"
+            android:hint="@string/account"
+            app:helperText="@string/account_helper"
+            app:layout_constraintTop_toBottomOf="@id/image_bg_head">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit1"
@@ -44,26 +50,47 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_margin="20dp"
             android:id="@+id/edit_layout2"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/edit_layout1" >
+            android:layout_margin="20dp"
+            android:hint="@string/password"
+            app:endIconMode="password_toggle"
+            app:helperText="@string/password_helper"
+            app:layout_constraintTop_toBottomOf="@id/edit_layout1">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkbox"
+            android:textColor="?attr/colorPrimary"
+            app:buttonTint="?attr/colorPrimary"
+            android:text="@string/i_use_app_quietly"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_layout2"
+            android:padding="5dp"
+            android:checked="@={viewModel.agree}"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="10dp" />
+
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login"
-            android:id="@+id/button_login"
             android:layout_margin="60dp"
-            app:layout_constraintTop_toBottomOf="@id/edit_layout2" />
+            android:enabled="@{viewModel.agree}"
+            android:text="@string/login"
+            app:layout_constraintTop_toBottomOf="@id/checkbox" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
