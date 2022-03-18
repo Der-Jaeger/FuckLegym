@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">FuckingLegym</string>
+    <string name="running_title">刷跑步</string>
+    <string name="activity_title">活动签到</string>
+    <string name="course_title">课程签到</string>
     <string name="update_url">https://foreverddb.github.io/FuckLegym/msg.json</string>
     <string name="local_maps_path">local_maps</string>
     <string name="introduction_running">每次上传的跑步公里数：这是一个在一定范围之间的随机值。   单位：km</string>

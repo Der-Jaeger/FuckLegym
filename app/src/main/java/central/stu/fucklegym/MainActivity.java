@@ -1,6 +1,7 @@
 package central.stu.fucklegym;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +26,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentFactory;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.android.material.navigation.NavigationView;
@@ -32,133 +36,18 @@ import com.google.android.material.navigation.NavigationView;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Locale;
 
+import central.stu.fucklegym.fragments.ActivityFragment;
+import central.stu.fucklegym.fragments.BaseFragment;
+import central.stu.fucklegym.fragments.FreeRunFragment;
 import fucklegym.top.entropy.NetworkSupport;
 import fucklegym.top.entropy.User;
 import ldh.logic.OnlineData;
 import ldh.ui.run.RunningActivity;
-
-class LoginCheck extends Thread {
-    String username;
-    String password;
-    Handler handler;
-
-    public LoginCheck(String username, String password, Handler handler) {
-        this.username = username;
-        this.password = password;
-        this.handler = handler;
-    }
-
-    @Override
-    public void run() {
-        try {
-            User user = new User(username, password);
-            user.login();
-            handler.sendEmptyMessage(MainActivity.LOGIN_SUCCESS);
-//            OnlineData.INSTANCE.getUser().postValue(user);
-        } catch (IOException e) {
-            e.printStackTrace();
-            handler.sendEmptyMessage(MainActivity.LOGIN_FAIL);
-        }
-    }
-}
-
-class Jump extends Thread {
-    private Activity cont;
-
-    public Jump(Activity con) {
-        this.cont = con;
-    }
-
-    @Override
-    public void run() {
-        EditText username = (EditText) cont.findViewById(R.id.editText_username);
-        EditText password = (EditText) cont.findViewById(R.id.editText_password);
-        String user = username.getText().toString();
-        String pass = password.getText().toString();
-        Intent intent = new Intent(cont, RunningActivity.class);
-        intent.putExtra("username", user);
-        intent.putExtra("password", pass);
-        cont.startActivity(intent);
-//        cont.finish();
-    }
-}
-
-class SignJump extends Thread {
-    private Activity cont;
-
-    public SignJump(Activity con) {
-        this.cont = con;
-    }
-
-    @Override
-    public void run() {
-        EditText username = (EditText) cont.findViewById(R.id.editText_username);
-        EditText password = (EditText) cont.findViewById(R.id.editText_password);
-        String user = username.getText().toString();
-        String pass = password.getText().toString();
-        Intent intent = new Intent(cont, SignUp.class);
-        intent.putExtra("username", user);
-        intent.putExtra("password", pass);
-        cont.startActivity(intent);
-//        cont.finish();
-    }
-
-    void save(String username, String password) {
-
-    }
-}
-
-class CourseSign extends Thread {
-    private Activity cont;
-
-    public CourseSign(Activity con) {
-        this.cont = con;
-    }
-
-    @Override
-    public void run() {
-        EditText username = (EditText) cont.findViewById(R.id.editText_username);
-        EditText password = (EditText) cont.findViewById(R.id.editText_password);
-        String user = username.getText().toString();
-        String pass = password.getText().toString();
-        Intent intent = new Intent(cont, CourseSignUp.class);
-        intent.putExtra("username", user);
-        intent.putExtra("password", pass);
-        cont.startActivity(intent);
-//        cont.finish();
-    }
-}
-
-//获取更新信息
-class UpdateMsgThread extends Thread {
-    public static final int SUCCESS = 0;
-    public static final int FAIL = 1;
-    private Handler handler;
-
-    public UpdateMsgThread(Handler handler) {
-        this.handler = handler;
-    }
-
-    @Override
-    public void run() {
-        try {
-            JSONObject jsonObject = NetworkSupport.getForReturn("https://foreverddb.github.io/FuckLegym/msg.json", new HashMap<String, String>());
-            Log.d("getUpdate", "showUpdateMsg: " + jsonObject.toJSONString());
-            Message msg = handler.obtainMessage();
-            msg.what = SUCCESS;
-            msg.obj = jsonObject;
-            handler.sendMessage(msg);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Message msg = handler.obtainMessage();
-            msg.what = FAIL;
-            msg.obj = null;
-            handler.sendEmptyMessage(FAIL);
-        }
-    }
-}
 
 //判断是否更新
 class CheckUpdateThread extends Thread {
@@ -189,19 +78,23 @@ class CheckUpdateThread extends Thread {
     }
 }
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity{
     public static final int LOGIN_SUCCESS = 0;
     public static final int LOGIN_FAIL = 1;
+    public static User staticUser;
     private boolean logined = false;
     private DrawerLayout drawerLayout;//滑动菜单
     private NavigationView navigationView;//滑动导航栏
+    private BaseFragment currentFragment;//当前主页面的Fragment
+    private Toolbar toolbar;//工具栏
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d("mysha1", "onCreate: " + sHA1(getApplicationContext()));
         //获取顶部工具栏
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -214,45 +107,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
-                checkLogin(item.getItemId());
+                //判断选项并替换Fragment
+                switch (item.getItemId()){
+                    case R.id.nav_run:
+                        startActivity(new Intent(MainActivity.this, RunningActivity.class));
+                        break;
+                    case R.id.nav_activity:
+                        startActivity(new Intent(MainActivity.this, SignUp.class));
+                        break;
+                    case R.id.nav_course:
+                        startActivity(new Intent(MainActivity.this, CourseSignUp.class));
+                        break;
+                }
                 drawerLayout.closeDrawers();
                 return true;
             }
         });
 
-        //检查更新
-        checkUpdate();
-        Button but = (Button) findViewById(R.id.button_freeRun);
-//        findViewById(R.id.button_running).setOnClickListener(v -> {
-//            startActivity(new Intent(this, RunningActivity.class));
-//        });
-        but.setOnClickListener(this);
-        ((Button) findViewById(R.id.button_signup)).setOnClickListener(this);
-        ((Button) findViewById(R.id.button_course_sign)).setOnClickListener(this);
-        //获取文本框的账号密码
-        EditText username = (EditText) findViewById(R.id.editText_username);
-        EditText password = (EditText) findViewById(R.id.editText_password);
-        ((Button) findViewById(R.id.save)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String user = username.getText().toString();
-                String pass = password.getText().toString();
-                MainActivity.this.saveUser(user, pass);
-            }
-        });
-
-        //判断是否更新
-        SharedPreferences currentVersion = getSharedPreferences("update", MODE_PRIVATE);
-        String version = currentVersion.getString("current_version", "");
-        if (!getVersionName().equals(version)) {
-            showUpdateMsg();
-        }
-        //获取保存的账号密码
-        SharedPreferences userInfo = getSharedPreferences("user", MODE_PRIVATE);
-        String usn = userInfo.getString("username", "");
-        String pwd = userInfo.getString("password", "");
-        username.setText(usn);
-        password.setText(pwd);
     }
 
     /**
@@ -267,6 +138,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
+    public void changeFragment(BaseFragment fragment){
+        toolbar.setTitle(fragment.getTitle());
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.the_activities_layout, fragment);
+        transaction.commit();
+    }
     /**
      * 设置菜单选项的每个按钮事件
      *
@@ -286,163 +164,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
         return true;
-    }
-
-    public void checkLogin(int id) {
-        Handler handler = new Handler() {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                switch (msg.what) {
-                    case LOGIN_SUCCESS:
-                        Toast.makeText(MainActivity.this, "登陆成功！", Toast.LENGTH_SHORT).show();
-                        switch (id) {
-                            case R.id.nav_run:
-                                jumpFreeRun();
-                                break;
-                            case R.id.nav_activity:
-                                jumpSignUp();
-                                break;
-                            case R.id.nav_course:
-                                jumpCourseSignUp();
-                                break;
-                        }
-                        logined = true;
-                        break;
-                    case LOGIN_FAIL:
-                        logined = false;
-                        android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(MainActivity.this)
-                                .setTitle("登陆失败")
-                                .setMessage("乐健账户登陆检查失败，请重新检查您的乐健账号和密码！")
-                                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                })
-                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                    }
-                                })
-                                .create();
-                        alertDialog.show();
-                        break;
-                }
-            }
-        };
-        EditText username = (EditText) findViewById(R.id.editText_username);
-        EditText password = (EditText) findViewById(R.id.editText_password);
-        String user = username.getText().toString();
-        String pass = password.getText().toString();
-        new LoginCheck(user, pass, handler).start();
-    }
-
-    @Override
-    public void onClick(View view) {
-        Handler handler = new Handler() {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                switch (msg.what) {
-                    case LOGIN_SUCCESS:
-                        Toast.makeText(MainActivity.this, "登陆成功！", Toast.LENGTH_SHORT).show();
-                        if (view.getId() == R.id.button_freeRun) {
-                            jumpFreeRun();
-                        } else if (view.getId() == R.id.button_signup) {
-                            jumpSignUp();
-                        } else if (view.getId() == R.id.button_course_sign) {
-                            jumpCourseSignUp();
-                        }
-                        break;
-                    case LOGIN_FAIL:
-                        android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(MainActivity.this)
-                                .setTitle("登陆失败")
-                                .setMessage("乐健账户登陆检查失败，请重新检查您的乐健账号和密码！")
-                                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                })
-                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                    }
-                                })
-                                .create();
-                        alertDialog.show();
-                        break;
-                }
-            }
-        };
-        EditText username = (EditText) findViewById(R.id.editText_username);
-        EditText password = (EditText) findViewById(R.id.editText_password);
-        String user = username.getText().toString();
-        String pass = password.getText().toString();
-        new LoginCheck(user, pass, handler).start();
-    }
-
-    private void jumpFreeRun() {
-        Jump jmp = new Jump(this);
-        jmp.start();
-    }
-
-    private void jumpSignUp() {
-        SignJump jmp = new SignJump(this);
-        jmp.start();
-    }
-
-    private void jumpCourseSignUp() {
-        CourseSign jmp = new CourseSign(this);
-        jmp.start();
-    }
-
-    //    private void jumpWeb(String url){
-//        Intent intent = new Intent(MainActivity.this, WebViewStarter.class);
-//        intent.putExtra("url", url);
-//        startActivity(intent);
-//    }
-    //保存账号密码
-    void saveUser(String username, String password) {
-        SharedPreferences userInfo = getSharedPreferences("user", MODE_PRIVATE);
-        SharedPreferences.Editor userEdit = userInfo.edit();
-        userEdit.putString("username", username);
-        userEdit.putString("password", password);
-        userEdit.apply();
-        Toast.makeText(MainActivity.this, "账号密码保存成功！", Toast.LENGTH_SHORT).show();
-    }
-
-    //显示更新信息
-    void showUpdateMsg() {
-        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
-//        new UpdateThread().start();
-        Handler handlerMsg = new Handler() {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what) {
-                    case UpdateMsgThread.SUCCESS:
-                        StringBuffer s = new StringBuffer();
-                        s.append("更新日志：\n");
-                        JSONObject jsonObject = (JSONObject) msg.obj;
-                        String[] msgs = jsonObject.getObject("msg", String[].class);
-                        for (int i = 0; i < msgs.length; i++) {
-                            s.append((i + 1) + ". " + msgs[i] + "\n");
-                        }
-                        alertDialogBuilder.setMessage(s);
-                        alertDialogBuilder.setPositiveButton("我知道了", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        });
-                        final AlertDialog alertdialog1 = alertDialogBuilder.create();
-                        alertdialog1.show();
-                        SharedPreferences update = getSharedPreferences("update", MODE_PRIVATE);
-                        update.edit().putString("current_version", getVersionName()).apply();
-                        break;
-                    case UpdateMsgThread.FAIL:
-                        break;
-                }
-            }
-        };
-        new UpdateMsgThread(handlerMsg).start();//获取更新信息
     }
 
     //检查更新
@@ -505,4 +226,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return null;
     }
+
+    public static String sHA1(Context context){
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), PackageManager.GET_SIGNATURES);
+            byte[] cert = info.signatures[0].toByteArray();
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+            byte[] publicKey = md.digest(cert);
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < publicKey.length; i++) {
+                String appendString = Integer.toHexString(0xFF & publicKey[i])
+                        .toUpperCase(Locale.US);
+                if (appendString.length() == 1)
+                    hexString.append("0");
+                hexString.append(appendString);
+                hexString.append(":");
+            }
+            String result = hexString.toString();
+            return result.substring(0, result.length()-1);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

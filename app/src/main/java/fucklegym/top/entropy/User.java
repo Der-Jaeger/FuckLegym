@@ -5,6 +5,8 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -25,6 +27,9 @@ public class User {
     boolean hasLogin = false;
     private int weekIndex;
     private HashMap<String,String> activities;
+    @NotNull
+    public final Object value = null;
+
     public User(String username, String password){
         this.username = username;
         this.password = password;

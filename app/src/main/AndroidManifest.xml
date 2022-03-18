@@ -35,9 +35,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".OnlineMaps" />
         <activity android:name=".CourseSignUp" />
-        <activity android:name=".UpdateMassage" />
         <activity android:name=".SignUp" />
-        <activity android:name=".FreeRun" />
         <activity android:name=".MapSelector" />
 
         <service android:name="com.amap.api.location.APSService" />
