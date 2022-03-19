@@ -17,6 +17,7 @@ import com.liangguo.claritypermission.requestPermissions
 import com.pgyersdk.feedback.PgyFeedback
 import ldh.base.BaseActivity
 import ldh.logic.OnlineData
+import ldh.logic.OnlineData.getUserDataOrRelogin
 import ldh.logic.legym.LocalUserData
 import ldh.ui.run.RunningActivity
 
@@ -78,11 +79,13 @@ class MainActivity : BaseActivity() {
             }
 
 
-            user = OnlineData.userData
-            imageHeader.setImageResource(
-                if (OnlineData.userData.gender != 1) R.drawable.ic_avatar_male
-                else R.drawable.icon_avatar_man
-            )
+            getUserDataOrRelogin {
+                user = it
+                imageHeader.setImageResource(
+                    if (it.gender != 1) R.drawable.ic_avatar_male
+                    else R.drawable.icon_avatar_man
+                )
+            }
 
         }
 

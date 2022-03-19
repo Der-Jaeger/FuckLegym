@@ -77,7 +77,6 @@ class LoginActivity : BaseActivity() {
             loginResultJob.getCompleted().apply {
                 withContext(Dispatchers.Main) {
                     data?.let {
-                        Log.d("login111", "initNetwork: $data")
                         MainActivity::class.startNewActivity()
                         finish()
                     } ?: let {
