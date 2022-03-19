@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ldh.logic.legym.OnlineData
+import ldh.logic.OnlineData
 import ldh.logic.legym.network.NetworkRepository
 import ldh.logic.legym.network.model.running.totalRunning.TotalRunningRequestBean
 

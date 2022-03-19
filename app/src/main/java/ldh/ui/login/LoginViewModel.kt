@@ -21,4 +21,5 @@ class LoginViewModel: ViewModel() {
      */
     val responsibleSelf = MutableLiveData(false)
 
+
 }

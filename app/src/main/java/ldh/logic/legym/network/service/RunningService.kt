@@ -1,6 +1,6 @@
 package ldh.logic.legym.network.service
 
-import ldh.logic.legym.LegymHeaderMap
+import ldh.logic.LegymHeaderMap
 import ldh.logic.legym.network.model.HttpResult
 import ldh.logic.legym.network.model.running.RunningLimitRequestBean
 import ldh.logic.legym.network.model.running.RunningLimitResultBean

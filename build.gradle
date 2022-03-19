@@ -11,6 +11,7 @@ buildscript {
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://raw.githubusercontent.com/Pgyer/mvn_repo_pgyer/master" }
+        maven { url "https://maven.admobile.top/repository/maven-releases/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.2'
@@ -32,6 +33,7 @@ allprojects {
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://raw.githubusercontent.com/Pgyer/mvn_repo_pgyer/master" }
+        maven { url "https://maven.admobile.top/repository/maven-releases/" }
     }
 }
 

@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 import fucklegym.top.entropy.NetworkSupport;
 import fucklegym.top.entropy.User;
-import ldh.logic.legym.OnlineData;
+import ldh.logic.OnlineData;
 
 class LoadActivitiresThread extends Thread{
     private User user;

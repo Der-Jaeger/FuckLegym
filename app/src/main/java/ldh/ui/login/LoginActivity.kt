@@ -19,11 +19,11 @@ import com.zackratos.ultimatebarx.ultimatebarx.statusBarOnly
 import kotlinx.coroutines.*
 import ldh.base.BaseActivity
 import ldh.config.AppConfig.versionCode
+import ldh.logic.OnlineData
 import ldh.logic.clouds.CloudsNetworkRepository
 import ldh.logic.clouds.model.StopConfig
-import ldh.logic.legym.OnlineData
-import ldh.logic.LocalUserData.password
-import ldh.logic.LocalUserData.userId
+import ldh.logic.legym.LocalUserData.password
+import ldh.logic.legym.LocalUserData.userId
 import ldh.ui.main.MainActivity
 
 
@@ -99,11 +99,13 @@ class LoginActivity : BaseActivity() {
             .setTitle(stopConfig.info.title)
             .setMessage(stopConfig.info.message)
             .apply {
-                stopConfig.button?.let {
-                    setPositiveButton(it.text) { _, _ ->
-                        val intent = Intent(Intent.ACTION_VIEW)
-                        intent.data = Uri.parse(it.url)
-                        startActivity(intent)
+                stopConfig.button?.let { button ->
+                    setPositiveButton(button.text) { _, _ ->
+                        button.url?.let {
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            intent.data = Uri.parse(it)
+                            startActivity(intent)
+                        }
                     }
                 }
             }

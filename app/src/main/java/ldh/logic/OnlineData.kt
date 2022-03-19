@@ -1,28 +1,22 @@
-package ldh.logic.legym
+package ldh.logic
 
 import android.content.Intent
 import com.liangguo.androidkit.app.startNewActivity
 import fucklegym.top.entropy.User
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import ldh.logic.interfaces.LoginResultCallback
+import kotlinx.coroutines.*
+import ldh.logic.bmob.logic.generateBmobUser
+import ldh.logic.bmob.logic.getBmobDataByLegymId
+import ldh.logic.bmob.logic.suspendSaveSync
+import ldh.logic.bmob.model.BmobUser
+import ldh.logic.legym.LocalUserData
 import ldh.logic.legym.network.NetworkRepository
-import ldh.logic.legym.network.model.HttpResult
 import ldh.logic.legym.network.model.current.GetCurrentResultBean
 import ldh.logic.legym.network.model.login.LoginResult
 import ldh.logic.legym.network.model.running.RunningLimitRequestBean
 import ldh.logic.legym.network.model.running.RunningLimitResultBean
 import ldh.ui.login.LoginActivity
-import ldh.logic.LocalUserData
 import ldh.utils.LogUtil.uploadLog
 
-/**
- * 乐健请求头的Map类型
- */
-typealias LegymHeaderMap = MutableMap<String, String>
 
 /**
  * @author ldh
@@ -40,31 +34,7 @@ object OnlineData {
 
     lateinit var currentData: GetCurrentResultBean
 
-    /**
-     * 请求头
-     */
-    val headerMap: LegymHeaderMap
-        get() = mutableMapOf(
-            Pair("Content-type", "application/json"),
-            Pair("Authorization", "Bearer " + userData.accessToken)
-        )
-
-    private val loginDataFlow = MutableSharedFlow<LoginResult>()
-
-
-    /**
-     * 获取用户，在回调中会传回一个非空的[LoginResult]对象。
-     */
-    @Deprecated("已废弃，以后删了")
-    fun getUser(callback: LoginResultCallback) {
-        userData?.let {
-            callback.onResult(it)
-        } ?: loginAndDo {
-            userData?.let {
-                callback.onResult(it)
-            }
-        }
-    }
+    lateinit var bmobUser: BmobUser
 
     val user: User
         get() = User(LocalUserData.userId, LocalUserData.password)
@@ -90,7 +60,6 @@ object OnlineData {
                     data?.let {
                         //登录成功
                         withContext(Dispatchers.Main) {
-                            loginDataFlow.emit(it)
                             userData = it
                             runnable?.run()
                         }
@@ -105,20 +74,40 @@ object OnlineData {
         }
     }
 
-    suspend fun syncLogin(): HttpResult<LoginResult?> {
-        val result = NetworkRepository.login(LocalUserData.userId, LocalUserData.password)
+    suspend fun syncLogin() = withContext(Dispatchers.IO) {
+        val userId = LocalUserData.userId
+        val result = NetworkRepository.login(userId, LocalUserData.password)
         result.data?.let { loginResult ->
             userData = loginResult
-            NetworkRepository.getCurrentSemesterId().data?.let { currentResultBean ->
-                currentData = currentResultBean
-                NetworkRepository.getRunningLimit(RunningLimitRequestBean(currentResultBean.id)).data?.let {
-                    runningLimitData = it
-                    uploadLog("数据全部加载完成，当前数据有  userData: $loginResult  currentData: $currentResultBean  runningLimitData: $runningLimitData")
+            //登录成功后要进行俩两个任务：同步Bmob数据，还要请求乐健的信息
+            val jobBmob = async { asyncBmobData(userId!!, loginResult) }
+            val jobLegym = async {
+                NetworkRepository.getCurrentSemesterId().data?.let { currentResultBean ->
+                    currentData = currentResultBean
+                    NetworkRepository.getRunningLimit(RunningLimitRequestBean(currentResultBean.id)).data?.let {
+                        runningLimitData = it
+                    }
                 }
             }
+            awaitAll(jobBmob, jobLegym)
         }
         uploadLog("登录状态  $result")
-        return result
+        result
     }
+
+    /**
+     * 同步更新Bmob的数据
+     */
+    suspend fun asyncBmobData(legymId: String, loginResult: LoginResult) = withContext(Dispatchers.IO) {
+        getBmobDataByLegymId(legymId) ?: let {
+            //没有账号就注册
+            val newUser = loginResult.generateBmobUser(legymId)
+            newUser.suspendSaveSync()
+            getBmobDataByLegymId(legymId) ?: throw Exception("Bmob注册新用户后再查找依旧找不到。  $newUser")
+        }.apply {
+            bmobUser = this
+        }
+    }
+
 
 }
