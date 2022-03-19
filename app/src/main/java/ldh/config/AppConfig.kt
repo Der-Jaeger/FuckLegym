@@ -1,9 +1,10 @@
 package ldh.config
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
 import com.liangguo.easyingcontext.EasyingContext.context
+import com.tencent.mmkv.MMKV
+import ldh.logic.LocalUserData
 import java.text.SimpleDateFormat
 
 
@@ -39,3 +40,5 @@ object AppConfig {
 
 
 }
+
+val defaultMMKV by lazy { MMKV.defaultMMKV() }

@@ -14,6 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.liangguo.androidkit.app.ToastUtil
 import com.liangguo.androidkit.app.startNewActivity
 import com.liangguo.androidkit.commons.smartNotifyValue
+import com.pgyersdk.crash.PgyCrashManager
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarOnly
 import kotlinx.coroutines.*
 import ldh.base.BaseActivity
@@ -21,9 +22,8 @@ import ldh.config.AppConfig.versionCode
 import ldh.logic.clouds.CloudsNetworkRepository
 import ldh.logic.clouds.model.StopConfig
 import ldh.logic.legym.OnlineData
-import ldh.logic.legym.network.model.HttpResult
-import ldh.ui.login.logic.LocalUserData.password
-import ldh.ui.login.logic.LocalUserData.userId
+import ldh.logic.LocalUserData.password
+import ldh.logic.LocalUserData.userId
 import ldh.ui.main.MainActivity
 
 
@@ -63,8 +63,8 @@ class LoginActivity : BaseActivity() {
             val stopConfigJob = async { CloudsNetworkRepository.getStopConfig() }
             awaitAll(loginResultJob, stopConfigJob)
             stopConfigJob.getCompleted()?.apply {
+                Log.e("停用信息", toString())
                 //处理停用信息
-                Log.e("StopConfig结果", toString())
                 if (deprecatedVersion >= versionCode) {
                     //该版本可能停用，在saveVersions里面找找该版本是否需要保留
                     if (!saveVersion.contains(versionCode)) {
@@ -76,13 +76,13 @@ class LoginActivity : BaseActivity() {
             }
             loginResultJob.getCompleted().apply {
                 withContext(Dispatchers.Main) {
-                    exception?.let {
-                        //登录失败，初始化UI
-                        initUI()
-                    }
                     data?.let {
                         MainActivity::class.startNewActivity()
                         finish()
+                    } ?: let {
+                        PgyCrashManager.reportCaughtException(this@LoginActivity, exception)
+                        //登录失败，初始化UI
+                        initUI()
                     }
                 }
 
