@@ -8,7 +8,7 @@ data class LoginResult(
     val accessTokenExpires: Long,
     val accountNumber: String,
     val authorities: List<Any>,
-    val avatar: Int?,
+    val avatar: String?,
     val birthDay: Long,
     val campusId: String,
     val campusName: Any,

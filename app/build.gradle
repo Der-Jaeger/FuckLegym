@@ -11,8 +11,8 @@ android {
         applicationId "central.stu.fucklegym"
         minSdkVersion 24
         targetSdkVersion 32
-        versionCode 12
-        versionName "3.5.3"
+        versionCode 13
+        versionName "3.5.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
