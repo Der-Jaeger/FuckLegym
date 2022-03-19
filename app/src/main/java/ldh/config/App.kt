@@ -1,7 +1,6 @@
 package ldh.config
 
 import android.app.Application
-import androidx.annotation.RequiresPermission
 import androidx.lifecycle.ProcessLifecycleOwner
 import central.stu.fucklegym.BuildConfig
 import cn.bmob.v3.Bmob

@@ -34,7 +34,7 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://raw.githubusercontent.com/Pgyer/mvn_repo_pgyer/master" }
         maven { url "https://maven.admobile.top/repository/maven-releases/" }
-    }
+        }
 }
 
 task clean(type: Delete) {
