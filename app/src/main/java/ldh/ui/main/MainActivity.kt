@@ -64,11 +64,11 @@ class MainActivity : BaseActivity() {
             }
 
             buttonSignActivity.setOnClickListener {
-                CourseSignUpActivity::class.startNewActivity()
+                SignUp::class.startNewActivity()
             }
 
             buttonSignCourse.setOnClickListener {
-                SignUp::class.startNewActivity()
+                CourseSignUpActivity::class.startNewActivity()
             }
 
 

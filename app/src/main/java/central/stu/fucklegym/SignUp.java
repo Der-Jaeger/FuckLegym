@@ -221,5 +221,6 @@ public class SignUp extends AppCompatActivity {
                 }
             }
         });
+        new LoadActivitiresThread(user, handler).start();
     }
 }
