@@ -1,5 +1,6 @@
 package ldh.ui.main
 
+import android.Manifest
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
@@ -103,7 +104,10 @@ class MainActivity : BaseActivity() {
                 LocalUserData.password = ""
                 OnlineData.loginAndDo()
             }
-            R.id.feedback -> PgyFeedback.getInstance().showDialog(this)
+            R.id.feedback -> {
+                requestPermissions(Manifest.permission.RECORD_AUDIO)
+                PgyFeedback.getInstance().showDialog(this)
+            }
         }
         return super.onOptionsItemSelected(item)
     }

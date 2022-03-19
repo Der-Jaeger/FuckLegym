@@ -33,11 +33,10 @@ private val bmobQuery: BmobQuery<BmobUser>
  * 返回可能为空
  */
 suspend fun getBmobDataByLegymId(legymId: String) = suspendCoroutine<BmobUser?> {
-    bmobQuery.setSQL("SELECT * FROM $BMOB_LEGYM_USER_TABLE")
-        .addWhereContains("userId", legymId)
+    bmobQuery.setSQL("SELECT * FROM $BMOB_LEGYM_USER_TABLE WHERE userId = '$legymId'")
         .doSQLQuery(object : SQLQueryListener<BmobUser>() {
             override fun done(p0: BmobQueryResult<BmobUser>?, p1: BmobException?) {
-                it.resume(p0?.results?.lastOrNull())
+                it.resume(p0?.results?.firstOrNull())
             }
         })
 }

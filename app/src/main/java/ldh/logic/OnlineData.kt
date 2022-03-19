@@ -1,6 +1,7 @@
 package ldh.logic
 
 import android.content.Intent
+import android.util.Log
 import com.liangguo.androidkit.app.startNewActivity
 import fucklegym.top.entropy.User
 import kotlinx.coroutines.*
@@ -104,9 +105,9 @@ object OnlineData {
             val newUser = loginResult.generateBmobUser(legymId)
             newUser.suspendSaveSync()
             getBmobDataByLegymId(legymId) ?: throw Exception("Bmob注册新用户后再查找依旧找不到。  $newUser")
-        }.apply {
-            bmobUser = this
         }
+    }.apply {
+        bmobUser = this
     }
 
 
