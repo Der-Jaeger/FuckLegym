@@ -11,5 +11,5 @@ package ldh.logic.clouds.model
  */
 data class Button(
     val text: String,
-    val url: String
+    val url: String?
 )

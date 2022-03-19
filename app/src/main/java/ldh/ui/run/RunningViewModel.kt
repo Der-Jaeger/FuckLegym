@@ -11,7 +11,7 @@ import fucklegym.top.entropy.PathGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ldh.logic.legym.OnlineData.runningLimitData
+import ldh.logic.OnlineData.runningLimitData
 import ldh.logic.legym.network.NetworkRepository
 import ldh.ui.run.logic.RunningPrefUtil
 import ldh.ui.run.logic.RunningPrefUtil.DEFAULT_DISTANCE_RANGE_FROM

@@ -15,8 +15,8 @@ import com.liangguo.androidkit.app.startNewActivity
 import com.liangguo.claritypermission.requestPermissions
 import com.pgyersdk.feedback.PgyFeedback
 import ldh.base.BaseActivity
-import ldh.logic.legym.OnlineData
-import ldh.logic.LocalUserData
+import ldh.logic.OnlineData
+import ldh.logic.legym.LocalUserData
 import ldh.ui.run.RunningActivity
 
 

@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import central.stu.fucklegym.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -15,7 +14,6 @@ import com.liangguo.androidkit.color.resolveColor
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarOnly
 import kotlinx.coroutines.launch
 import ldh.config.defaultMMKV
-import ldh.logic.LocalUserData
 import ldh.logic.clouds.CloudsNetworkRepository
 import ldh.logic.clouds.model.Button
 import ldh.logic.clouds.model.Notice
@@ -26,7 +24,7 @@ import ldh.logic.clouds.model.Notice
  * 时间: 2022/3/17 16:54
  * 邮箱: 2637614077@qq.com
  */
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AdActivity() {
 
     protected val noticeKey: String
         get() = "NoticeKey - " + javaClass.simpleName
@@ -88,9 +86,11 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     protected open fun onNoticeButtonClick(button: Button) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(button.url)
-        startActivity(intent)
+        button.url?.let {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(it)
+            startActivity(intent)
+        }
     }
 
     protected fun appCompatOnCreate(savedInstanceState: Bundle?) {

@@ -18,7 +18,7 @@ import java.io.IOException;
 
 import fucklegym.top.entropy.NetworkSupport;
 import fucklegym.top.entropy.User;
-import ldh.logic.legym.OnlineData;
+import ldh.logic.OnlineData;
 
 class getCourseList extends Thread{
     private User user;

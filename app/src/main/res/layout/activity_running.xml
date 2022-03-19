@@ -36,7 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="15dp"
-                android:background="?attr/colorPrimaryInverse" />
+                android:background="?attr/colorPrimaryInverse"
+                tools:ignore="PrivateResource" />
 
         </LinearLayout>
 
@@ -106,7 +107,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginHorizontal="15dp"
-                    android:background="?attr/colorPrimaryInverse" />
+                    android:background="?attr/colorPrimaryInverse"
+                    tools:ignore="PrivateResource" />
 
             </LinearLayout>
 

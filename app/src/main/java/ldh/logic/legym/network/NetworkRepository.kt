@@ -4,8 +4,7 @@ import android.util.Log
 import fucklegym.top.entropy.NetworkSupport
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ldh.logic.legym.OnlineData
-import ldh.logic.legym.OnlineData.headerMap
+import ldh.logic.OnlineData
 import ldh.logic.legym.network.model.HttpResult
 import ldh.logic.legym.network.model.login.LoginRequestBean
 import ldh.logic.legym.network.model.running.RunningLimitRequestBean
@@ -18,6 +17,21 @@ import ldh.ui.run.logic.RunningType
 import java.io.IOException
 import java.util.*
 import kotlin.random.Random
+
+
+/**
+ * 乐健请求头的Map类型
+ */
+typealias LegymHeaderMap = MutableMap<String, String>
+
+/**
+ * 请求头
+ */
+val headerMap: LegymHeaderMap
+    get() = mutableMapOf(
+        Pair("Content-type", "application/json"),
+        Pair("Authorization", "Bearer " + OnlineData.userData.accessToken)
+    )
 
 
 /**

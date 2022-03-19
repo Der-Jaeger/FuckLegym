@@ -1,8 +1,11 @@
 package ldh.config
 
 import android.app.Application
+import androidx.annotation.RequiresPermission
 import androidx.lifecycle.ProcessLifecycleOwner
 import central.stu.fucklegym.BuildConfig
+import cn.bmob.v3.Bmob
+import com.google.android.gms.ads.MobileAds
 import com.pgyersdk.crash.PgyCrashManager
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
@@ -31,6 +34,10 @@ class App : Application() {
         MMKV.initialize(this)
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleObserver)
+
+        MobileAds.initialize(this)
+
+        Bmob.initialize(this, "3e655bebbef14053524bc2c07d727468")
 
     }
 

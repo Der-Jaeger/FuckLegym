@@ -99,7 +99,7 @@ class RunningActivity : CollapsingToolbarActivity() {
                 .setPositiveButton(R.string.import_clould_maps) { _, _ ->
                     OnlineMaps::class.startNewActivity()
                 }
-                .setNeutralButton(R.string.create_custom_maps) { _, _ ->
+                .setNegativeButton(R.string.create_custom_maps) { _, _ ->
                     MapSelector::class.startNewActivity()
                 }
                 .setItems(maps) { _, witch ->
