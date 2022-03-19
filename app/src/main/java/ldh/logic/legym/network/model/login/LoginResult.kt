@@ -34,3 +34,8 @@ data class LoginResult(
     val weight: Int,
     val year: Int
 )
+{
+    constructor(): this("", 0, "", listOf(), "", 0, "", "", "", 1,
+    0, "", "", "", "", "", "", "", 0, "", "",
+    "", "", "", "", "", "", 0, 0)
+}

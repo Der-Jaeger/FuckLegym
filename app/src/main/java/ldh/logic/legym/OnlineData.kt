@@ -1,10 +1,7 @@
 package ldh.logic.legym
 
 import android.content.Intent
-import android.util.Log
 import com.liangguo.androidkit.app.startNewActivity
-import com.liangguo.easyingcontext.EasyingContext.context
-import com.pgyersdk.crash.PgyCrashManager
 import fucklegym.top.entropy.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +17,6 @@ import ldh.logic.legym.network.model.running.RunningLimitRequestBean
 import ldh.logic.legym.network.model.running.RunningLimitResultBean
 import ldh.ui.login.LoginActivity
 import ldh.logic.LocalUserData
-import ldh.ui.main.MainActivity
 import ldh.utils.LogUtil.uploadLog
 
 /**
@@ -38,7 +34,7 @@ object OnlineData {
     /**
      * 当前的用户
      */
-    lateinit var userData: LoginResult
+    var userData: LoginResult = LoginResult()
 
     lateinit var runningLimitData: RunningLimitResultBean
 
