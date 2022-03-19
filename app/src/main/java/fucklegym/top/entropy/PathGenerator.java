@@ -6,6 +6,8 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.amap.api.maps2d.AMapUtils;
+import com.amap.api.maps2d.model.LatLng;
 import com.liangguo.easyingcontext.EasyingContext;
 
 import java.util.ArrayList;
@@ -49,6 +51,10 @@ public class PathGenerator {
         }
     };
 
+    /**
+     * 获取本地储存的地图
+     * @param local_maps
+     */
     public static void getLocalMaps(SharedPreferences local_maps){
         String[] maps = new String[]{};
         Map<String, ?> all = local_maps.getAll();
@@ -67,7 +73,10 @@ public class PathGenerator {
         }
     }
 
-
+    /**
+     * 将地图数据加载到类中
+     * @param map
+     */
     private static void setAttr(String map){
         HashMap<String, double[]> currentMap = RunMaps.get(map);
         latitude = currentMap.get("latitude");
@@ -76,15 +85,42 @@ public class PathGenerator {
         base_lon = currentMap.get("base")[1];
     }
 
+    /**
+     * 获取纬度经度数组长度最小值，防止两数组长度不一样而出错
+     * @param latitude
+     * @param longitude
+     * @return
+     */
     public static int getMin(double[] latitude, double[] longitude){
         return latitude.length <= longitude.length ? latitude.length : longitude.length;
     }
 
+    /**
+     * 计算路线一圈的长度，返回以米为单位的整数
+     * @param latitude
+     * @param longitude
+     * @return
+     */
+    private static int calculateAllDistance(double[] latitude, double[] longitude){
+        float distance = 0;
+        ArrayList<LatLng> points = new ArrayList<>();
+        for(int i = 0; i <  getMin(latitude, longitude);i ++ ){
+            points.add(new LatLng(latitude[i], longitude[i]));
+        }
+        for (int i = 0; i < points.size() - 1; i ++){
+            distance += AMapUtils.calculateLineDistance(points.get(i), points.get(i + 1));
+        }
+        return (int)distance;
+    }
+
     public static ArrayList<Pair<Double,Double>> genRegularRoutine(String map, double totalMile){
-        int cycleMeter = 400;//操场一圈的长度
+
         int totalMeter = (int)(totalMile * 1000);
         int offset = 6;//经纬度随机偏移量
         setAttr(map);
+
+        int cycleMeter = calculateAllDistance(latitude, longitude);//路线一圈的长度
+
         ArrayList<Pair<Double,Double>> points = new ArrayList<>();
         Random rad = new Random(System.currentTimeMillis());
         for(int j = 0;j <= totalMeter/cycleMeter;j ++){

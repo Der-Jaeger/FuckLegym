@@ -288,6 +288,7 @@ public class MapSelector extends AppCompatActivity implements PoiSearch.OnPoiSea
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (checkSelfPermission(access[0]) == PackageManager.PERMISSION_GRANTED) {
+            getLocation();
         } else {
             Toast.makeText(MapSelector.this, "本功能需要定位权限才能正常运行！", Toast.LENGTH_SHORT).show();
             Request();
