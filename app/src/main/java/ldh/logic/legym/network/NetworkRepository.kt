@@ -106,6 +106,7 @@ object NetworkRepository {
     private suspend fun <T> catchError(block: suspend () -> HttpResult<T?>): HttpResult<T?> {
         return try {
             var result = block()
+            Log.d("login111", "catchError: " + result)
             if (result.code == 401 || result.code == 1002) {
                 //Token失效，重新登录
                 OnlineData.syncLogin().data?.let {

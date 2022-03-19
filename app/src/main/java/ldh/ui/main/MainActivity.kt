@@ -79,7 +79,7 @@ class MainActivity : BaseActivity() {
 
             user = OnlineData.userData
             imageHeader.setImageResource(
-                if (OnlineData.userData.avatar == 1) R.drawable.ic_avatar_male
+                if (OnlineData.userData.gender != 1) R.drawable.ic_avatar_male
                 else R.drawable.icon_avatar_man
             )
 
