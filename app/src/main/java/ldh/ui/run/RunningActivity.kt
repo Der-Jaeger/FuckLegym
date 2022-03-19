@@ -3,6 +3,7 @@ package ldh.ui.run
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import central.stu.fucklegym.MapSelector
 import central.stu.fucklegym.OnlineMaps
 import central.stu.fucklegym.R
 import central.stu.fucklegym.databinding.ActivityRunningBinding
@@ -97,6 +98,9 @@ class RunningActivity : CollapsingToolbarActivity() {
                 .setTitle(R.string.running_area)
                 .setPositiveButton(R.string.import_clould_maps) { _, _ ->
                     OnlineMaps::class.startNewActivity()
+                }
+                .setNeutralButton(R.string.create_custom_maps) { _, _ ->
+                    MapSelector::class.startNewActivity()
                 }
                 .setItems(maps) { _, witch ->
                     mViewModel.selectMap(maps[witch])

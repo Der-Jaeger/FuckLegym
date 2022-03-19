@@ -11,8 +11,8 @@ android {
         applicationId "central.stu.fucklegym"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 9
-        versionName "3.4.3"
+        versionCode 10
+        versionName "3.5.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -26,9 +26,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            minifyEnabled true
+            minifyEnabled false
             // true - 打开资源压缩
-            shrinkResources true
+            shrinkResources false
             // 用于设置Proguard的规划路径；
         }
     }

@@ -93,9 +93,11 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.sign_out) {
-            LocalUserData.password = ""
-            OnlineData.loginAndDo()
+        when (item.itemId) {
+            R.id.sign_out -> {
+                LocalUserData.password = ""
+                OnlineData.loginAndDo()
+            }
         }
         return super.onOptionsItemSelected(item)
     }

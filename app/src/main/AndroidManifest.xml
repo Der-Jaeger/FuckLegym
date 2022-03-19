@@ -33,7 +33,6 @@
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.FuckLegym">
-        <activity android:name=".MainActivity" />
         <activity android:name=".OnlineMaps" />
         <activity android:name=".CourseSignUpActivity" />
         <activity android:name=".SignUp" />

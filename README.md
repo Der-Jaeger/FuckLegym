@@ -1,4 +1,6 @@
 # 通知（2022.3.12）
+在[release](https://github.com/Foreverddb/FuckLegym/releases/)中下载最新版的app
+
 IOS 版已着手开始开发，详情请关注仓库 [iLegym](https://github.com/Bill-Haku/iLegym)
 
 # 乐健一键跑步、签到app

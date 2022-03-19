@@ -12,6 +12,7 @@
     <string name="point_running">定点跑</string>
     <string name="range_running">范围跑</string>
     <string name="import_clould_maps">导入云端地图</string>
+    <string name="create_custom_maps">创建自定义路线</string>
     <string name="upload">上传</string>
     <string name="upload_running">刷跑步</string>
     <string name="option_running">跑步选项</string>
