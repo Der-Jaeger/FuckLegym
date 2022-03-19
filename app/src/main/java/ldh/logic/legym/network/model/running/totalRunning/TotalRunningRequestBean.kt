@@ -1,4 +1,4 @@
-package ldh.logic.network.model.running.totalRunning
+package ldh.logic.legym.network.model.running.totalRunning
 
 data class TotalRunningRequestBean(
     val hasRule: Boolean,

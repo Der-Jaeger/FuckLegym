@@ -1,6 +1,6 @@
 package ldh.logic.interfaces;
 
-import ldh.logic.network.model.login.LoginResult;
+import ldh.logic.legym.network.model.login.LoginResult;
 
 /**
  * @author ldh

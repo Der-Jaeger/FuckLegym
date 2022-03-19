@@ -1,4 +1,4 @@
-package ldh.logic.network.model.running
+package ldh.logic.legym.network.model.running
 
 data class RunningLimitRequestBean(
     val semesterId: String?

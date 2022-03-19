@@ -1,6 +1,9 @@
 package ldh.config
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
+import com.liangguo.easyingcontext.EasyingContext.context
 import java.text.SimpleDateFormat
 
 
@@ -18,5 +21,21 @@ object AppConfig {
 
     @SuppressLint("SimpleDateFormat")
     val legymDateStringFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+    /**
+     * 应用版本号
+     */
+    val versionCode: Int
+        get() {
+            var versionCode = 10
+            try {
+                versionCode =
+                    context.packageManager.getPackageInfo(context.packageName, 0).versionCode
+            } catch (e: PackageManager.NameNotFoundException) {
+                e.printStackTrace()
+            }
+            return versionCode
+        }
+
 
 }

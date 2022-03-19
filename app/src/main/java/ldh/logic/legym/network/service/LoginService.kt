@@ -1,8 +1,8 @@
-package ldh.logic.network.service
+package ldh.logic.legym.network.service
 
-import ldh.logic.network.model.login.LoginRequestBean
-import ldh.logic.network.model.login.LoginResult
-import ldh.logic.network.model.HttpResult
+import ldh.logic.legym.network.model.login.LoginRequestBean
+import ldh.logic.legym.network.model.login.LoginResult
+import ldh.logic.legym.network.model.HttpResult
 import retrofit2.http.Body
 import retrofit2.http.POST
 

@@ -1,17 +1,13 @@
 package ldh.ui.main
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
-import ldh.logic.OnlineData
-import ldh.logic.network.NetworkRepository
-import ldh.logic.network.model.running.totalRunning.TotalRunningRequestBean
+import ldh.logic.legym.OnlineData
+import ldh.logic.legym.network.NetworkRepository
+import ldh.logic.legym.network.model.running.totalRunning.TotalRunningRequestBean
 
 
 /**

@@ -1,4 +1,4 @@
-package ldh.logic.network.model.current
+package ldh.logic.legym.network.model.current
 
 data class GetCurrentResultBean(
     val current: Any,

@@ -1,12 +1,12 @@
-package ldh.logic.network.service
+package ldh.logic.legym.network.service
 
-import ldh.logic.LegymHeaderMap
-import ldh.logic.network.model.HttpResult
-import ldh.logic.network.model.running.RunningLimitRequestBean
-import ldh.logic.network.model.running.RunningLimitResultBean
-import ldh.logic.network.model.running.UploadRunningDetailsRequestBean
-import ldh.logic.network.model.running.totalRunning.TotalRunningRequestBean
-import ldh.logic.network.model.running.totalRunning.TotalRunningResultBean
+import ldh.logic.legym.LegymHeaderMap
+import ldh.logic.legym.network.model.HttpResult
+import ldh.logic.legym.network.model.running.RunningLimitRequestBean
+import ldh.logic.legym.network.model.running.RunningLimitResultBean
+import ldh.logic.legym.network.model.running.UploadRunningDetailsRequestBean
+import ldh.logic.legym.network.model.running.totalRunning.TotalRunningRequestBean
+import ldh.logic.legym.network.model.running.totalRunning.TotalRunningResultBean
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
 import retrofit2.http.POST

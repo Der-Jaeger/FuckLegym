@@ -1,16 +1,11 @@
-package ldh.logic
+package ldh.logic.legym
 
-import android.util.Log
 import central.stu.fucklegym.Encrypter
-import fucklegym.top.entropy.NetworkSupport
 import fucklegym.top.entropy.PathGenerator
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import ldh.config.AppConfig.LEGYM_APP_VERSION
 import ldh.config.AppConfig.legymDateStringFormatter
-import ldh.logic.network.model.running.RoutineLine
-import ldh.logic.network.model.running.UploadRunningDetailsRequestBean
+import ldh.logic.legym.network.model.running.RoutineLine
+import ldh.logic.legym.network.model.running.UploadRunningDetailsRequestBean
 import ldh.ui.run.logic.RunningType
 import ldh.utils.SystemUtil.systemModel
 import ldh.utils.SystemUtil.systemVersion

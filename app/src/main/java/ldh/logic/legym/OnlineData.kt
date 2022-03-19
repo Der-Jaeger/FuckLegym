@@ -1,4 +1,4 @@
-package ldh.logic
+package ldh.logic.legym
 
 import android.content.Intent
 import android.util.Log
@@ -10,12 +10,12 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ldh.logic.interfaces.LoginResultCallback
-import ldh.logic.network.NetworkRepository
-import ldh.logic.network.model.HttpResult
-import ldh.logic.network.model.current.GetCurrentResultBean
-import ldh.logic.network.model.login.LoginResult
-import ldh.logic.network.model.running.RunningLimitRequestBean
-import ldh.logic.network.model.running.RunningLimitResultBean
+import ldh.logic.legym.network.NetworkRepository
+import ldh.logic.legym.network.model.HttpResult
+import ldh.logic.legym.network.model.current.GetCurrentResultBean
+import ldh.logic.legym.network.model.login.LoginResult
+import ldh.logic.legym.network.model.running.RunningLimitRequestBean
+import ldh.logic.legym.network.model.running.RunningLimitResultBean
 import ldh.ui.login.LoginActivity
 import ldh.ui.login.logic.LocalUserData
 

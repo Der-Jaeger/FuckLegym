@@ -1,4 +1,4 @@
-package ldh.logic.network.model
+package ldh.logic.legym.network.model
 
 import java.lang.Exception
 
