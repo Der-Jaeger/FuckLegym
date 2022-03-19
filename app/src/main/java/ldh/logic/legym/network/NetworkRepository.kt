@@ -5,6 +5,7 @@ import fucklegym.top.entropy.NetworkSupport
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ldh.logic.OnlineData
+import ldh.logic.OnlineData.getUserDataSync
 import ldh.logic.legym.network.model.HttpResult
 import ldh.logic.legym.network.model.login.LoginRequestBean
 import ldh.logic.legym.network.model.running.RunningLimitRequestBean
@@ -27,10 +28,10 @@ typealias LegymHeaderMap = MutableMap<String, String>
 /**
  * 请求头
  */
-val headerMap: LegymHeaderMap
-    get() = mutableMapOf(
+suspend fun getHeaderMap(): LegymHeaderMap
+     = mutableMapOf(
         Pair("Content-type", "application/json"),
-        Pair("Authorization", "Bearer " + OnlineData.userData.accessToken)
+        Pair("Authorization", "Bearer " + getUserDataSync().accessToken)
     )
 
 
@@ -56,7 +57,7 @@ object NetworkRepository {
      * 上传跑步数据
      */
     suspend fun uploadRunningDetail(requestBean: UploadRunningDetailsRequestBean) = catchError {
-        runningService.uploadRunningDetails(headerMap, requestBean)
+        runningService.uploadRunningDetails(getHeaderMap(), requestBean)
     }
 
     /**
@@ -79,7 +80,7 @@ object NetworkRepository {
             val startTime =
                 Date(endTime.time - (10 + Random.nextInt(10)) * 60 * 1000 - Random.nextInt(60) * 1000)
             return@withContext NetworkSupport.uploadRunningDetail(
-                OnlineData.userData.accessToken,
+                getUserDataSync().accessToken,
                 limitationsGoalsSexInfoId,
                 OnlineData.currentData.id,
                 totMileage,
@@ -96,21 +97,21 @@ object NetworkRepository {
     }
 
     suspend fun getCurrentSemesterId() = catchError {
-        educationService.getCurrent(headerMap)
+        educationService.getCurrent(getHeaderMap())
     }
 
     /**
      * 获取跑步的规则限制
      */
     suspend fun getRunningLimit(requestBean: RunningLimitRequestBean) = catchError {
-        runningService.getRunningLimit(headerMap, requestBean)
+        runningService.getRunningLimit(getHeaderMap(), requestBean)
     }
 
     /**
      * 获取已经跑了多少公里了
      */
     suspend fun getTotalRunning(requestBean: TotalRunningRequestBean) = catchError {
-        runningService.getTotalRunning(headerMap, requestBean)
+        runningService.getTotalRunning(getHeaderMap(), requestBean)
     }
 
 
@@ -120,7 +121,6 @@ object NetworkRepository {
     private suspend fun <T> catchError(block: suspend () -> HttpResult<T?>): HttpResult<T?> {
         return try {
             var result = block()
-            Log.d("login111", "catchError: " + result)
             if (result.code == 401 || result.code == 1002) {
                 //Token失效，重新登录
                 OnlineData.syncLogin().data?.let {

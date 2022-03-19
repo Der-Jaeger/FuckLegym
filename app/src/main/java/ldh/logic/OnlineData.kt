@@ -29,7 +29,7 @@ object OnlineData {
     /**
      * 当前的用户
      */
-    lateinit var userData: LoginResult
+    private var userData: LoginResult? = null
 
     lateinit var runningLimitData: RunningLimitResultBean
 
@@ -39,6 +39,28 @@ object OnlineData {
 
     val user: User
         get() = User(LocalUserData.userId, LocalUserData.password)
+
+    /**
+     * 获取当前登录的用户，若当前用户为null，则重新打开登录界面，否则直接调用[success]。
+     */
+    fun getUserDataOrRelogin(success: (LoginResult) -> Unit) {
+        userData?.let {
+            success(it)
+        } ?: LoginActivity::class.startNewActivity {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        }
+    }
+
+    /**
+     * 同步的方式获取当前用户
+     *
+     * 如果当前用户不为空则直接返回
+     *
+     * 如果当前用户为空，则再登录一次，登录成功则返回新的结果，登录失败则抛异常
+     */
+    suspend fun getUserDataSync(): LoginResult = userData ?: syncLogin().let { result ->
+        result.data ?: let { throw java.lang.Exception("以重新登录的方式获取当前用户，重新登录失败${result.exception}") }
+    }
 
     /**
      * 重新登录并且在登录结束后做什么事情...
@@ -99,16 +121,17 @@ object OnlineData {
     /**
      * 同步更新Bmob的数据
      */
-    suspend fun asyncBmobData(legymId: String, loginResult: LoginResult) = withContext(Dispatchers.IO) {
-        getBmobDataByLegymId(legymId) ?: let {
-            //没有账号就注册
-            val newUser = loginResult.generateBmobUser(legymId)
-            newUser.suspendSaveSync()
-            getBmobDataByLegymId(legymId) ?: throw Exception("Bmob注册新用户后再查找依旧找不到。  $newUser")
+    suspend fun asyncBmobData(legymId: String, loginResult: LoginResult) =
+        withContext(Dispatchers.IO) {
+            getBmobDataByLegymId(legymId) ?: let {
+                //没有账号就注册
+                val newUser = loginResult.generateBmobUser(legymId)
+                newUser.suspendSaveSync()
+                getBmobDataByLegymId(legymId) ?: throw Exception("Bmob注册新用户后再查找依旧找不到。  $newUser")
+            }
+        }.apply {
+            bmobUser = this
         }
-    }.apply {
-        bmobUser = this
-    }
 
 
 }
