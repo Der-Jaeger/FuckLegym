@@ -1,7 +1,6 @@
 package ldh.ui.login.logic
 
 import com.tencent.mmkv.MMKV
-import ldh.logic.OnlineData
 
 
 /**

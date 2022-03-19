@@ -11,7 +11,7 @@ import central.stu.fucklegym.R
 import central.stu.fucklegym.SignUp
 import com.liangguo.androidkit.app.startNewActivity
 import ldh.base.BaseActivity
-import ldh.logic.OnlineData
+import ldh.logic.legym.OnlineData
 import ldh.ui.login.logic.LocalUserData
 import ldh.ui.run.RunningActivity
 

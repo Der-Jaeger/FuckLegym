@@ -30,6 +30,10 @@ abstract class BaseActivity: AppCompatActivity() {
         }
     }
 
+    protected fun appCompatOnCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             onBackPressed()

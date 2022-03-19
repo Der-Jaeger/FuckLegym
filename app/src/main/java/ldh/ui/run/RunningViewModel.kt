@@ -1,22 +1,18 @@
 package ldh.ui.run
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import central.stu.fucklegym.R
 import com.liangguo.androidkit.app.ToastUtil
 import com.liangguo.easyingcontext.EasyingContext.context
-import fucklegym.top.entropy.NetworkSupport.uploadRunningDetail
 import fucklegym.top.entropy.PathGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ldh.logic.BeanRepository
-import ldh.logic.OnlineData.runningLimitData
-import ldh.logic.OnlineData.userData
-import ldh.logic.network.NetworkRepository
+import ldh.logic.legym.OnlineData.runningLimitData
+import ldh.logic.legym.network.NetworkRepository
 import ldh.ui.run.logic.RunningPrefUtil
 import ldh.ui.run.logic.RunningPrefUtil.DEFAULT_DISTANCE_RANGE_FROM
 import ldh.ui.run.logic.RunningPrefUtil.DEFAULT_DISTANCE_RANGE_TO

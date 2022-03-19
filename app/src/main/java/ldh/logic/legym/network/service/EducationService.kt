@@ -1,8 +1,8 @@
-package ldh.logic.network.service
+package ldh.logic.legym.network.service
 
-import ldh.logic.LegymHeaderMap
-import ldh.logic.network.model.HttpResult
-import ldh.logic.network.model.current.GetCurrentResultBean
+import ldh.logic.legym.LegymHeaderMap
+import ldh.logic.legym.network.model.HttpResult
+import ldh.logic.legym.network.model.current.GetCurrentResultBean
 import retrofit2.http.GET
 import retrofit2.http.HeaderMap
 

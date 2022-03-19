@@ -1,4 +1,4 @@
-package ldh.logic.network.model.login
+package ldh.logic.legym.network.model.login
 
 /**
  * 登录成功后返回的用户信息

@@ -1,4 +1,4 @@
-package ldh.logic.network.model.login
+package ldh.logic.legym.network.model.login
 
 /**
  * 登录请求的

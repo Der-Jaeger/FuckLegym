@@ -7,7 +7,7 @@
 
         <variable
             name="user"
-            type="ldh.logic.network.model.login.LoginResult" />
+            type="ldh.logic.legym.network.model.login.LoginResult" />
 
     </data>
 

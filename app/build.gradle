@@ -10,9 +10,9 @@ android {
     defaultConfig {
         applicationId "central.stu.fucklegym"
         minSdkVersion 24
-        targetSdkVersion 31
-        versionCode 10
-        versionName "3.5.0"
+        targetSdkVersion 32
+        versionCode 11
+        versionName "3.5.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

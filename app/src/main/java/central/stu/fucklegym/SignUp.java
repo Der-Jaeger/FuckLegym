@@ -1,12 +1,7 @@
 package central.stu.fucklegym;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,7 +12,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
@@ -26,7 +20,7 @@ import java.util.HashMap;
 
 import fucklegym.top.entropy.NetworkSupport;
 import fucklegym.top.entropy.User;
-import ldh.logic.OnlineData;
+import ldh.logic.legym.OnlineData;
 
 class LoadActivitiresThread extends Thread{
     private User user;
