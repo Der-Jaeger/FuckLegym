@@ -34,7 +34,7 @@ object OnlineData {
     /**
      * 当前的用户
      */
-    var userData: LoginResult = LoginResult()
+    lateinit var userData: LoginResult
 
     lateinit var runningLimitData: RunningLimitResultBean
 
