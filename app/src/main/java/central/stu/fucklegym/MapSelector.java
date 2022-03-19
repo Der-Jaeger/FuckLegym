@@ -203,7 +203,10 @@ public class MapSelector extends AppCompatActivity implements PoiSearch.OnPoiSea
             public void onClick(View view) {
                 if(polylines.size() <= 1){
                     Toast.makeText(MapSelector.this, "请至少选取两个坐标点！", Toast.LENGTH_SHORT).show();
-                }else {
+                }else if(polylines.size() >= 50){
+                    Toast.makeText(MapSelector.this, "路线不得选取超过50个坐标点！", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.local_maps_path), MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("自定义路线", getRouteToJson().toString());
