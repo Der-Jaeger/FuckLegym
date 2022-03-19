@@ -1,4 +1,4 @@
-package ldh.ui.login.logic
+package ldh.logic
 
 import com.tencent.mmkv.MMKV
 

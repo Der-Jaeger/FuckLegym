@@ -11,8 +11,8 @@ android {
         applicationId "central.stu.fucklegym"
         minSdkVersion 24
         targetSdkVersion 32
-        versionCode 11
-        versionName "3.5.2"
+        versionCode 12
+        versionName "3.5.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -57,6 +57,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
+    implementation 'com.pgyersdk:sdk:2.8.1'
     implementation 'com.tencent.bugly:crashreport_upgrade:1.5.23'
     implementation 'com.tencent:mmkv-static:1.0.23'
     implementation 'com.gitee.zackratos:UltimateBarX:0.8.0'

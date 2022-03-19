@@ -1,5 +1,7 @@
 package ldh.ui.main
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
@@ -10,9 +12,11 @@ import central.stu.fucklegym.CourseSignUpActivity
 import central.stu.fucklegym.R
 import central.stu.fucklegym.SignUp
 import com.liangguo.androidkit.app.startNewActivity
+import com.liangguo.claritypermission.requestPermissions
+import com.pgyersdk.feedback.PgyFeedback
 import ldh.base.BaseActivity
 import ldh.logic.legym.OnlineData
-import ldh.ui.login.logic.LocalUserData
+import ldh.logic.LocalUserData
 import ldh.ui.run.RunningActivity
 
 
@@ -36,6 +40,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         initViews()
         initDataListeners()
+        requestPermissions(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)
     }
 
     @SuppressLint("SetTextI18n")
@@ -98,6 +103,7 @@ class MainActivity : BaseActivity() {
                 LocalUserData.password = ""
                 OnlineData.loginAndDo()
             }
+            R.id.feedback -> PgyFeedback.getInstance().showDialog(this)
         }
         return super.onOptionsItemSelected(item)
     }

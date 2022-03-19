@@ -1,7 +1,9 @@
 package ldh.config
 
 import android.app.Application
+import androidx.lifecycle.ProcessLifecycleOwner
 import central.stu.fucklegym.BuildConfig
+import com.pgyersdk.crash.PgyCrashManager
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
 import com.tencent.mmkv.MMKV
@@ -24,8 +26,12 @@ class App : Application() {
         //配置Bugly
         Bugly.init(this, "9333bb0d44", BuildConfig.DEBUG)
         Beta.checkUpgrade(false, true)
+        PgyCrashManager.register(this)
 
         MMKV.initialize(this)
+
+        ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleObserver)
+
     }
 
 }

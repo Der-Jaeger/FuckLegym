@@ -1,5 +1,6 @@
 package ldh.logic.clouds
 
+import android.util.Log
 import ldh.logic.clouds.model.StopConfig
 import ldh.logic.clouds.service.CloudConfigService
 
@@ -13,13 +14,17 @@ object CloudsNetworkRepository {
 
     private val cloudConfigService by lazy { CloudsServiceCreator.create<CloudConfigService>() }
 
-    suspend fun getStopConfig(): StopConfig? = catchError { cloudConfigService.getStopConfig() }
+    suspend fun getStopConfig() = catchError { cloudConfigService.getStopConfig() }
 
+    suspend fun getNotices() = catchError { cloudConfigService.getNotices() }
+
+    suspend fun isEnableUploadLog() = catchError { cloudConfigService.isEnableUploadLog() }
 
     private suspend fun <T> catchError(block: suspend () -> T?): T? =
         try {
             block()
         } catch (e: Exception) {
+            Log.e("请求异常", e.toString())
             null
         }
 
